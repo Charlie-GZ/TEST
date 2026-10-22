@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f4f5f8" />
+  <title>登录 · CSHOP</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="css/style.css?v=15" />
+</head>
+<body class="auth-page">
+  <!-- 背景光晕 -->
+  <div class="bg-decor" aria-hidden="true">
+    <span class="orb orb--blue"></span>
+    <span class="orb orb--violet"></span>
+    <span class="orb orb--mint"></span>
+  </div>
+
+  <main class="auth-shell">
+    <section class="auth-card" aria-labelledby="loginTitle">
+      <header class="brand">
+        <h1 class="brand__logo" id="loginTitle">
+          CSHOP
+        </h1>
+        <p class="brand__tagline">让算力在指尖折叠</p>
+      </header>
+
+      <form class="form" id="loginForm" novalidate>
+        <div class="field">
+          <label class="field__label" for="account">账号</label>
+          <input
+            class="input"
+            id="account"
+            name="account"
+            type="text"
+            inputmode="text"
+            autocomplete="username"
+            placeholder="手机号 / 邮箱 / 用户名"
+            spellcheck="false"
+          />
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="password">密码</label>
+          <div class="input-wrap">
+            <input
+              class="input"
+              id="password"
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              placeholder="请输入密码"
+            />
+            <button
+              class="eye-btn"
+              type="button"
+              data-toggle-password="password"
+              aria-label="显示密码"
+              aria-pressed="false"
+            >
+              <svg class="eye-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M2.5 12S6.2 5.8 12 5.8 21.5 12 21.5 12 17.8 18.2 12 18.2 2.5 12 2.5 12Z" />
+                <circle cx="12" cy="12" r="3.1" />
+              </svg>
+              <svg class="eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M4 4l16 16" />
+                <path d="M9.6 5.2A9.9 9.9 0 0 1 12 5c5.8 0 9.5 6.2 9.5 6.2a17.4 17.4 0 0 1-2.6 3.5" />
+                <path d="M6.3 7.1A17.4 17.4 0 0 0 2.5 12S6.2 18.2 12 18.2a9.7 9.7 0 0 0 3.9-.8" />
+                <path d="M9.9 9.9a3 3 0 0 0 4.2 4.2" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <p class="form-msg" id="loginMsg" role="alert" aria-live="polite"></p>
+
+        <button class="btn btn--primary" type="submit" id="loginBtn">登 录</button>
+      </form>
+
+      <p class="auth-switch">
+        还没有账号？<a class="link" href="register.html">立即注册</a>
+      </p>
+    </section>
+  </main>
+
+  <script src="js/auth.js?v=15"></script>
+  <script src="js/login.js?v=15"></script>
+</body>
+</html>

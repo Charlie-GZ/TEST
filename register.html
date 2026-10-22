@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f4f5f8" />
+  <title>注册 · CSHOP</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="css/style.css?v=15" />
+</head>
+<body class="auth-page">
+  <div class="bg-decor" aria-hidden="true">
+    <span class="orb orb--blue"></span>
+    <span class="orb orb--violet"></span>
+    <span class="orb orb--mint"></span>
+  </div>
+
+  <main class="auth-shell">
+    <section class="auth-card" aria-labelledby="registerTitle">
+      <header class="brand">
+        <h1 class="brand__logo" id="registerTitle">
+          CSHOP
+        </h1>
+        <p class="brand__tagline">创建账号，开启折叠体验</p>
+      </header>
+
+      <form class="form" id="registerForm" novalidate>
+        <!-- 第一步：选择注册方式 -->
+        <div class="field">
+          <span class="field__label" id="methodLabel">
+            <span class="req" aria-hidden="true">*</span>选择注册方式
+          </span>
+          <div class="method" role="radiogroup" aria-labelledby="methodLabel">
+            <button
+              class="method-card"
+              type="button"
+              role="radio"
+              aria-checked="false"
+              aria-required="true"
+              data-method="phone"
+            >
+              <span class="method-card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="6.5" y="2.5" width="11" height="19" rx="2.6" />
+                  <path d="M10.6 18.4h2.8" />
+                </svg>
+              </span>
+              <span class="method-card__text">
+                <span class="method-card__title">手机号注册</span>
+                <span class="method-card__desc">使用 11 位手机号码</span>
+              </span>
+              <span class="method-card__check" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 12.6l4.3 4.3L19 7.2" />
+                </svg>
+              </span>
+            </button>
+
+            <button
+              class="method-card"
+              type="button"
+              role="radio"
+              aria-checked="false"
+              aria-required="true"
+              data-method="email"
+            >
+              <span class="method-card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2.8" y="5" width="18.4" height="14" rx="2.6" />
+                  <path d="M3.4 6.6 12 12.8l8.6-6.2" />
+                </svg>
+              </span>
+              <span class="method-card__text">
+                <span class="method-card__title">邮箱注册</span>
+                <span class="method-card__desc">使用常用电子邮箱</span>
+              </span>
+              <span class="method-card__check" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 12.6l4.3 4.3L19 7.2" />
+                </svg>
+              </span>
+            </button>
+          </div>
+          <p class="method-hint" id="methodHint">请选择一种方式，选择后填写账号</p>
+        </div>
+
+        <!-- 第二步：选择方式后才出现 -->
+        <div class="field field--reveal" id="accountField" aria-hidden="true">
+          <label class="field__label" for="regAccount">
+            <span class="req" aria-hidden="true">*</span><span id="regAccountLabel">手机号</span>
+          </label>
+          <input
+            class="input input--plain"
+            id="regAccount"
+            name="account"
+            type="text"
+            inputmode="tel"
+            autocomplete="off"
+            aria-required="true"
+            placeholder="请输入 11 位手机号"
+            spellcheck="false"
+          />
+        </div>
+
+        <!-- 第三步：设置用户名 -->
+        <div class="field">
+          <label class="field__label" for="regUsername">
+            <span class="req" aria-hidden="true">*</span>用户名
+          </label>
+          <input
+            class="input input--plain"
+            id="regUsername"
+            name="username"
+            type="text"
+            maxlength="16"
+            autocomplete="nickname"
+            aria-required="true"
+            placeholder="2-16 位字母、数字、下划线或中文"
+            spellcheck="false"
+          />
+        </div>
+
+        <!-- 第四步：头像与性别（选填） -->
+        <div class="field">
+          <span class="field__label">
+            头像与性别<span class="field__note">选填</span>
+          </span>
+
+          <div class="profile">
+            <button class="avatar" type="button" id="avatarBtn" aria-label="上传或更换头像">
+              <img
+                class="avatar__img"
+                id="avatarPreview"
+                src="assets/avatars/avatar-male.png"
+                alt="头像预览"
+              />
+              <span class="avatar__badge" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4.5 8.4h2.7l1.4-2h6.8l1.4 2h2.7a1.6 1.6 0 0 1 1.6 1.6v7.4a1.6 1.6 0 0 1-1.6 1.6H4.5a1.6 1.6 0 0 1-1.6-1.6V10a1.6 1.6 0 0 1 1.6-1.6Z" />
+                  <circle cx="12" cy="13.6" r="3" />
+                </svg>
+              </span>
+            </button>
+
+            <div class="profile__col">
+              <div class="gender" role="radiogroup" aria-label="性别（选填）">
+                <button class="gender__btn" type="button" role="radio" aria-checked="false" data-gender="male">男</button>
+                <button class="gender__btn" type="button" role="radio" aria-checked="false" data-gender="female">女</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="profile__actions">
+            <button class="text-btn" type="button" id="avatarUpload">上传照片</button>
+            <button class="text-btn text-btn--muted" type="button" id="avatarReset" hidden>恢复默认头像</button>
+          </div>
+          <input class="sr-only" id="avatarFile" type="file" accept="image/*" tabindex="-1" />
+        </div>
+
+        <!-- 第五步：设置密码 -->
+        <div class="field">
+          <label class="field__label" for="regPassword">
+            <span class="req" aria-hidden="true">*</span>设置密码
+          </label>
+          <div class="input-wrap">
+            <input
+              class="input"
+              id="regPassword"
+              name="password"
+              type="password"
+              autocomplete="new-password"
+              aria-required="true"
+              placeholder="6-20 位，含大小写字母和数字"
+            />
+            <button
+              class="eye-btn"
+              type="button"
+              data-toggle-password="regPassword"
+              aria-label="显示密码"
+              aria-pressed="false"
+            >
+              <svg class="eye-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M2.5 12S6.2 5.8 12 5.8 21.5 12 21.5 12 17.8 18.2 12 18.2 2.5 12 2.5 12Z" />
+                <circle cx="12" cy="12" r="3.1" />
+              </svg>
+              <svg class="eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M4 4l16 16" />
+                <path d="M9.6 5.2A9.9 9.9 0 0 1 12 5c5.8 0 9.5 6.2 9.5 6.2a17.4 17.4 0 0 1-2.6 3.5" />
+                <path d="M6.3 7.1A17.4 17.4 0 0 0 2.5 12S6.2 18.2 12 18.2a9.7 9.7 0 0 0 3.9-.8" />
+                <path d="M9.9 9.9a3 3 0 0 0 4.2 4.2" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- 第六步：确认密码 -->
+        <div class="field">
+          <label class="field__label" for="regPasswordConfirm">
+            <span class="req" aria-hidden="true">*</span>确认密码
+          </label>
+          <div class="input-wrap">
+            <input
+              class="input"
+              id="regPasswordConfirm"
+              name="passwordConfirm"
+              type="password"
+              autocomplete="new-password"
+              aria-required="true"
+              placeholder="请再次输入密码"
+            />
+            <button
+              class="eye-btn"
+              type="button"
+              data-toggle-password="regPasswordConfirm"
+              aria-label="显示密码"
+              aria-pressed="false"
+            >
+              <svg class="eye-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M2.5 12S6.2 5.8 12 5.8 21.5 12 21.5 12 17.8 18.2 12 18.2 2.5 12 2.5 12Z" />
+                <circle cx="12" cy="12" r="3.1" />
+              </svg>
+              <svg class="eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M4 4l16 16" />
+                <path d="M9.6 5.2A9.9 9.9 0 0 1 12 5c5.8 0 9.5 6.2 9.5 6.2a17.4 17.4 0 0 1-2.6 3.5" />
+                <path d="M6.3 7.1A17.4 17.4 0 0 0 2.5 12S6.2 18.2 12 18.2a9.7 9.7 0 0 0 3.9-.8" />
+                <path d="M9.9 9.9a3 3 0 0 0 4.2 4.2" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <p class="form-msg" id="registerMsg" role="alert" aria-live="polite"></p>
+
+        <button class="btn btn--primary" type="submit" id="registerBtn">注 册</button>
+      </form>
+
+      <p class="auth-switch">
+        已有账号？<a class="link" href="login.html">返回登录</a>
+      </p>
+    </section>
+  </main>
+
+  <!-- 头像裁剪：拖动 + 缩放，只在圆形框内取景 -->
+  <div class="cropper" id="cropper" hidden>
+    <div class="cropper__panel" role="dialog" aria-modal="true" aria-labelledby="cropperTitle">
+      <header class="cropper__head">
+        <h2 class="cropper__title" id="cropperTitle">调整头像</h2>
+        <p class="cropper__sub">拖动图片选择位置，滚轮或滑块缩放</p>
+      </header>
+
+      <div class="cropper__stage" id="cropperStage" tabindex="0" aria-label="头像取景区域">
+        <img class="cropper__img" id="cropperImg" alt="待裁剪的头像" draggable="false" />
+        <span class="cropper__ring" aria-hidden="true"></span>
+      </div>
+
+      <div class="cropper__zoom">
+        <span class="cropper__zoom-label" aria-hidden="true">缩放</span>
+        <input
+          class="cropper__range"
+          id="cropperZoom"
+          type="range"
+          min="1"
+          max="3"
+          step="0.01"
+          value="1"
+          aria-label="头像缩放"
+        />
+      </div>
+
+      <div class="cropper__actions">
+        <button class="btn btn--ghost cropper__btn" type="button" id="cropperCancel">取消</button>
+        <button class="btn btn--primary cropper__btn" type="button" id="cropperConfirm">使用此头像</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/auth.js?v=15"></script>
+  <script src="js/register.js?v=15"></script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+# 个人工作缓存（AI 辅助开发时的记忆、预览截图、临时脚本），不参与项目
+.workbuddy/
+
+# 图片处理用的原始素材：站点不引用，仅在本地重新生成商品图时需要
+assets/products/*-base.*
+
+# 发布产物（由源文件复制而来，供线上预览使用，源文件在根目录）
+dist/
+
+# 应用发布时生成的标记文件
+*.genie
+
+# 课程需求文档与个人笔记，不属于项目本体
+Markdown/
+
+# 系统 / 编辑器
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# 本项目无 npm 依赖，防止误提交
+node_modules/
