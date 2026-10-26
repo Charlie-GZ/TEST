@@ -6,9 +6,32 @@
   <meta name="theme-color" content="#ffffff" />
   <title>探索所有商品 · CSHOP</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="css/style.css?v=118" />
-  <link rel="stylesheet" href="css/cart.css?v=118" />
-  <link rel="stylesheet" href="css/home.css?v=118" />
+  <link rel="stylesheet" href="css/style.css?v=148" />
+  <link rel="stylesheet" href="css/cart.css?v=148" />
+  <link rel="stylesheet" href="css/home.css?v=153" />
+  <link rel="stylesheet" href="css/billboard.css?v=148" />
+  <link rel="stylesheet" href="css/cpad-billboard.css?v=13" />
+  <link rel="stylesheet" href="css/cbook-billboard.css?v=4" />
+  <link rel="stylesheet" href="css/cmaxing-billboard.css?v=2" />
+  <link rel="stylesheet" href="css/new-arrivals-billboard.css?v=1" />
+  <link rel="stylesheet" href="css/editorial.css?v=1" />
+  <link rel="stylesheet" href="css/assistant.css?v=4" />
+  <script>
+    /* 分类广告牌：提前设类，用广告牌替换页头占位，避免闪动 */
+    var billboardParams = new URLSearchParams(window.location.search);
+    var billboardCat = billboardParams.get("cat");
+    if (billboardCat === "cphone") {
+      document.documentElement.classList.add("is-cphone");
+    } else if (billboardCat === "cpad") {
+      document.documentElement.classList.add("is-cpad");
+    } else if (billboardCat === "cbook") {
+      document.documentElement.classList.add("is-cbook");
+    } else if (billboardCat === "accessories") {
+      document.documentElement.classList.add("is-accessories");
+    } else if (billboardParams.get("new") === "1") {
+      document.documentElement.classList.add("is-new");
+    }
+  </script>
 </head>
 <body class="home" data-page="products">
 
@@ -168,10 +191,12 @@
         </div>
 
         <form class="search" id="searchForm" role="search" autocomplete="off">
-          <svg class="search__icon" viewBox="0 0 24 24" aria-hidden="true">
-            <circle cx="11" cy="11" r="6.4" fill="none" stroke="currentColor" stroke-width="1.7" />
-            <path d="M16 16l4.2 4.2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
-          </svg>
+          <button class="search__icon" type="submit" aria-label="搜索">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="11" cy="11" r="6.4" fill="none" stroke="currentColor" stroke-width="1.7" />
+              <path d="M16 16l4.2 4.2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
+            </svg>
+          </button>
           <input
             class="search__input"
             id="searchInput"
@@ -183,10 +208,6 @@
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7L7 17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" /></svg>
           </button>
 
-          <div class="search__panel" id="searchPanel" hidden>
-            <p class="search__hint" id="searchHint">热门搜索</p>
-            <div class="search__list" id="searchList"></div>
-          </div>
         </form>
       </div>
     </div>
@@ -224,6 +245,207 @@
       </div>
     </section>
 
+    <!-- ==================== CPhone ING 广告牌 ==================== -->
+    <section class="cphone-board" id="cphoneBoard" aria-label="CPhone ING，AI强大赋能，多姿又多彩">
+      <div class="cphone-board__stage">
+        <span class="cphone-board__blob cphone-board__blob--1" aria-hidden="true"></span>
+        <span class="cphone-board__blob cphone-board__blob--2" aria-hidden="true"></span>
+        <span class="cphone-board__spill" aria-hidden="true"></span>
+        <span class="cphone-board__haze" aria-hidden="true"></span>
+        <span class="cphone-board__dust" aria-hidden="true"></span>
+
+        <div class="cphone-board__device" aria-hidden="true">
+          <span class="cphone-board__aura"></span>
+          <div class="cphone-board__float">
+            <div class="cphone-board__body">
+              <div class="cphone-board__screen">
+                <span class="cphone-board__wall"><span class="cphone-board__wall-img"></span></span>
+                <span class="cphone-board__notch"></span>
+                <div class="cphone-board__ai"><span class="cphone-board__ai-text">AI</span></div>
+                <span class="cphone-board__ignite"></span>
+                <span class="cphone-board__wet"></span>
+                <span class="cphone-board__sheen"></span>
+                <span class="cphone-board__glass"></span>
+                <span class="cphone-board__off"></span>
+                <span class="cphone-board__glint"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cphone-board__wave" aria-hidden="true">
+          <span class="cphone-board__wave-glow"></span>
+          <span class="cphone-board__wave-crash"><span class="cphone-board__wave-crash-img"></span></span>
+        </div>
+
+        <span class="cphone-board__impact" aria-hidden="true"></span>
+        <span class="cphone-board__flare" aria-hidden="true"></span>
+        <span class="cphone-board__scrim" aria-hidden="true"></span>
+
+        <div class="cphone-board__copy">
+          <span class="cphone-board__rule" aria-hidden="true"></span>
+          <h2 class="cphone-board__title">CPhone <em>ING</em></h2>
+          <p class="cphone-board__tagline">AI强大赋能，多姿又多彩</p>
+        </div>
+
+        <span class="cphone-board__vignette" aria-hidden="true"></span>
+        <span class="cphone-board__grain" aria-hidden="true"></span>
+      </div>
+    </section>
+
+    <!-- ==================== CPad Lion 8 广告牌 ==================== -->
+    <section class="cpad-board" id="cpadBoard" aria-label="CPad Lion 8，灵感，摊在桌上">
+      <div class="cpad-board__stage">
+        <span class="cpad-board__bg" aria-hidden="true"></span>
+        <span class="cpad-board__light" aria-hidden="true"></span>
+        <span class="cpad-board__ghost" aria-hidden="true">08</span>
+        <span class="cpad-board__cast" aria-hidden="true"></span>
+
+        <div class="cpad-board__device" aria-hidden="true">
+          <img class="cpad-board__img" src="assets/products/cpad-lion8.png" alt="" draggable="false" />
+          <span class="cpad-board__contact"></span>
+        </div>
+
+        <div class="cpad-board__copy">
+          <p class="cpad-board__eyebrow">
+            <span class="cpad-board__rule" aria-hidden="true"></span>
+            CPad Lion 8 · 8.3 英寸
+          </p>
+          <h2 class="cpad-board__title">灵感，<br />摊在桌上。</h2>
+          <ul class="cpad-board__specs">
+            <li>高画质显示</li>
+            <li>轻薄机身</li>
+            <li>随身创作</li>
+          </ul>
+        </div>
+
+        <span class="cpad-board__paper" aria-hidden="true"></span>
+      </div>
+    </section>
+
+    <!-- ==================== CBook Fold Light 广告牌 ==================== -->
+    <section class="cbook-board" id="cbookBoard" aria-label="CBook Fold Light，两块屏，一整块灵感">
+      <div class="cbook-board__stage">
+        <span class="cbook-board__bg" aria-hidden="true"></span>
+        <span class="cbook-board__glow" aria-hidden="true"></span>
+        <span class="cbook-board__haze" aria-hidden="true"></span>
+        <span class="cbook-board__ring cbook-board__ring--1" aria-hidden="true"></span>
+        <span class="cbook-board__ring cbook-board__ring--2" aria-hidden="true"></span>
+        <span class="cbook-board__dust" aria-hidden="true"></span>
+        <span class="cbook-board__sweep" aria-hidden="true"></span>
+
+        <div class="cbook-board__device" aria-hidden="true">
+          <span class="cbook-board__aura"></span>
+          <span class="cbook-board__beam cbook-board__beam--l"></span>
+          <span class="cbook-board__beam cbook-board__beam--r"></span>
+          <div class="cbook-board__float">
+            <div class="cbook-board__shot">
+              <img class="cbook-board__img" src="assets/billboard/cbook-fold-cutout.png" alt="" draggable="false" />
+              <span class="cbook-board__flow cbook-board__flow--top"></span>
+              <span class="cbook-board__flow cbook-board__flow--base"></span>
+              <span class="cbook-board__seam"></span>
+              <span class="cbook-board__flare"></span>
+              <span class="cbook-board__sheen"></span>
+            </div>
+          </div>
+          <span class="cbook-board__floor"></span>
+        </div>
+
+        <span class="cbook-board__scrim" aria-hidden="true"></span>
+
+        <div class="cbook-board__copy">
+          <span class="cbook-board__rule" aria-hidden="true"></span>
+          <h2 class="cbook-board__title">CBook <em>Fold Light</em></h2>
+          <p class="cbook-board__tagline">两块屏，一整块灵感</p>
+        </div>
+
+        <span class="cbook-board__vignette" aria-hidden="true"></span>
+        <span class="cbook-board__grain" aria-hidden="true"></span>
+      </div>
+    </section>
+
+    <!-- ==================== CMaxing 静界广告牌 ==================== -->
+    <section class="cmx-board" id="cmaxingBoard" aria-label="CMaxing 静界，世界很吵，戴上就静">
+      <div class="cmx-board__stage">
+        <span class="cmx-board__bg" aria-hidden="true"></span>
+        <span class="cmx-board__glow" aria-hidden="true"></span>
+        <span class="cmx-board__haze" aria-hidden="true"></span>
+        <span class="cmx-board__noise" aria-hidden="true"></span>
+        <span class="cmx-board__sweep" aria-hidden="true"></span>
+        <span class="cmx-board__wave" aria-hidden="true"></span>
+
+        <div class="cmx-board__device" aria-hidden="true">
+          <span class="cmx-board__quiet"></span>
+          <span class="cmx-board__hush"></span>
+          <span class="cmx-board__intake cmx-board__intake--l"></span>
+          <span class="cmx-board__intake cmx-board__intake--r"></span>
+          <div class="cmx-board__float">
+            <div class="cmx-board__shot">
+              <img class="cmx-board__img" src="assets/billboard/cmaxing-cutout.png" alt="" draggable="false" />
+              <span class="cmx-board__pulse cmx-board__pulse--l"></span>
+              <span class="cmx-board__pulse cmx-board__pulse--r"></span>
+              <span class="cmx-board__rim"></span>
+              <span class="cmx-board__sheen"></span>
+            </div>
+          </div>
+          <span class="cmx-board__floor"></span>
+        </div>
+
+        <span class="cmx-board__scrim" aria-hidden="true"></span>
+
+        <div class="cmx-board__copy">
+          <span class="cmx-board__rule" aria-hidden="true"></span>
+          <h2 class="cmx-board__title">CMaxing <em>静界</em></h2>
+          <p class="cmx-board__tagline">世界很吵，戴上就静</p>
+        </div>
+
+        <span class="cmx-board__vignette" aria-hidden="true"></span>
+        <span class="cmx-board__grain" aria-hidden="true"></span>
+      </div>
+    </section>
+
+    <!-- ==================== 新品三联广告牌 ==================== -->
+    <section class="na-board" id="newArrivalsBoard" aria-label="新品上市，CPhone ING、CPad Lion 8、CMaxing 同台登场">
+      <div class="na-board__stage">
+        <span class="na-board__bg" aria-hidden="true"></span>
+
+        <div class="na-board__copy">
+          <span class="na-board__rule" aria-hidden="true"></span>
+          <p class="na-board__eyebrow">CSHOP · NEW ARRIVALS</p>
+          <h2 class="na-board__title">新品，<em>三面来见</em></h2>
+          <p class="na-board__tagline">冰蓝 · 酒红 · 钴蓝，三种灵感同台</p>
+        </div>
+
+        <div class="na-board__item na-board__item--phone">
+          <span class="na-board__halo" aria-hidden="true"></span>
+          <img class="na-board__img" src="assets/billboard/cphone-ing-cutout.webp" alt="" draggable="false" loading="lazy" decoding="async" />
+          <span class="na-board__contact" aria-hidden="true"></span>
+        </div>
+
+        <div class="na-board__item na-board__item--pad">
+          <span class="na-board__halo" aria-hidden="true"></span>
+          <img class="na-board__img" src="assets/products/cpad-lion8.png" alt="" draggable="false" loading="lazy" decoding="async" />
+          <span class="na-board__contact" aria-hidden="true"></span>
+        </div>
+
+        <div class="na-board__item na-board__item--max">
+          <span class="na-board__halo" aria-hidden="true"></span>
+          <img class="na-board__img" src="assets/billboard/cmaxing-cutout.png" alt="" draggable="false" loading="lazy" decoding="async" />
+          <span class="na-board__contact" aria-hidden="true"></span>
+        </div>
+
+        <div class="na-board__labels">
+          <span class="na-board__label na-board__label--phone"><i>01</i>CPhone ING</span>
+          <span class="na-board__label na-board__label--pad"><i>02</i>CPad Lion 8</span>
+          <span class="na-board__label na-board__label--max"><i>03</i>CMaxing</span>
+        </div>
+
+        <span class="na-board__scrim" aria-hidden="true"></span>
+        <span class="na-board__vignette" aria-hidden="true"></span>
+        <span class="na-board__grain" aria-hidden="true"></span>
+      </div>
+    </section>
+
     <!-- ==================== 商品网格 ==================== -->
     <section class="page-section">
       <div class="product-grid" id="allGrid"></div>
@@ -258,10 +480,14 @@
   <!-- 轻提示 -->
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="js/auth.js?v=118"></script>
-  <script src="js/products.js?v=118"></script>
-  <script src="js/cart.js?v=118"></script>
-  <script src="js/nav.js?v=118"></script>
-  <script src="js/all-products.js?v=118"></script>
+  <script src="js/auth.js?v=148"></script>
+  <script src="js/products.js?v=149"></script>
+  <script src="js/cart.js?v=148"></script>
+  <script src="js/orders.js?v=148"></script>
+  <script src="js/nav.js?v=150"></script>
+  <script src="js/all-products.js?v=151"></script>
+  <script src="js/ai-endpoint.js?v=1"></script>
+  <script src="js/assistant-tools.js?v=4"></script>
+  <script src="js/assistant.js?v=4"></script>
 </body>
 </html>

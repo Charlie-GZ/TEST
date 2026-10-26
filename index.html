@@ -6,9 +6,11 @@
   <meta name="theme-color" content="#ffffff" />
   <title>CSHOP · 让算力在指尖折叠</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="css/style.css?v=118" />
-  <link rel="stylesheet" href="css/cart.css?v=118" />
-  <link rel="stylesheet" href="css/home.css?v=118" />
+  <link rel="stylesheet" href="css/style.css?v=148" />
+  <link rel="stylesheet" href="css/cart.css?v=148" />
+  <link rel="stylesheet" href="css/home.css?v=153" />
+  <link rel="stylesheet" href="css/editorial.css?v=1" />
+  <link rel="stylesheet" href="css/assistant.css?v=4" />
 </head>
 <body class="home" data-page="home">
 
@@ -168,10 +170,12 @@
         </div>
 
         <form class="search" id="searchForm" role="search" autocomplete="off">
-          <svg class="search__icon" viewBox="0 0 24 24" aria-hidden="true">
-            <circle cx="11" cy="11" r="6.4" fill="none" stroke="currentColor" stroke-width="1.7" />
-            <path d="M16 16l4.2 4.2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
-          </svg>
+          <button class="search__icon" type="submit" aria-label="搜索">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="11" cy="11" r="6.4" fill="none" stroke="currentColor" stroke-width="1.7" />
+              <path d="M16 16l4.2 4.2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
+            </svg>
+          </button>
           <input
             class="search__input"
             id="searchInput"
@@ -183,10 +187,6 @@
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7L7 17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" /></svg>
           </button>
 
-          <div class="search__panel" id="searchPanel" hidden>
-            <p class="search__hint" id="searchHint">热门搜索</p>
-            <div class="search__list" id="searchList"></div>
-          </div>
         </form>
       </div>
     </div>
@@ -203,44 +203,163 @@
   <div class="nav-scrim" id="navScrim" aria-hidden="true"></div>
 
   <main>
-    <!-- ==================== 主视觉 ==================== -->
+    <!-- ==================== 主视觉（双屏轮播） ==================== -->
     <section class="hero">
-      <div class="hero__inner">
-        <div class="hero__copy">
-          <p class="eyebrow">
-            <span class="eyebrow__brand">CSHOP</span>
-            <span class="eyebrow__year">2026</span>
-            <span class="eyebrow__dot" aria-hidden="true"></span>
-            <span class="eyebrow__season">新品季</span>
-          </p>
-          <h1 class="hero__title">让算力在指尖折叠</h1>
-          <p class="hero__lede">
-            从 CBook 的创作力，到 CPhone 的影像力，<br class="hero__br" />
-            一套为日常而生的设备体系。
-          </p>
-          <div class="hero__actions">
-            <button class="btn-ink" type="button" id="heroExplore">探索新品</button>
-            <button class="btn-quiet" type="button" id="heroLearn">
-              了解 CBook
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
-            </button>
+      <div class="hero__inner" id="heroSlide" data-active="0">
+        <div class="hero__viewport">
+          <div class="hero__track" id="heroTrack">
+
+            <!-- 幻灯片 1：CBook Fold Light -->
+            <article class="hero__slide hero__slide--fold">
+              <div class="hero__copy">
+                <p class="eyebrow">
+                  <span class="eyebrow__brand">CSHOP</span>
+                  <span class="eyebrow__year">2026</span>
+                  <span class="eyebrow__dot" aria-hidden="true"></span>
+                  <span class="eyebrow__season">新品季</span>
+                </p>
+                <h1 class="hero__title">让算力在指尖折叠</h1>
+                <p class="hero__lede">
+                  从 CBook 的创作力，到 CPhone 的影像力，<br class="hero__br" />
+                  一套为日常而生的设备体系。
+                </p>
+                <div class="hero__actions">
+                  <button class="btn-ink" type="button" id="heroExplore">探索新品</button>
+                </div>
+              </div>
+
+              <div class="hero__visual">
+                <img
+                  class="hero__art-img"
+                  src="assets/home/hero-fold.jpg"
+                  alt="CBook Fold Light 折叠双屏笔记本"
+                  loading="eager"
+                />
+                <span class="hero__caption">CBook Fold Light</span>
+              </div>
+            </article>
+
+            <!-- 幻灯片 2：CPhone ING -->
+            <article class="hero__slide hero__slide--phone">
+              <div class="hero__copy">
+                <p class="eyebrow">
+                  <span class="eyebrow__brand">CPhone ING</span>
+                  <span class="eyebrow__year">2026</span>
+                  <span class="eyebrow__dot" aria-hidden="true"></span>
+                  <span class="eyebrow__season">AI 新品</span>
+                </p>
+                <h2 class="hero__title">AI 强大赋能，<br />多姿多彩</h2>
+                <p class="hero__lede">
+                  6.5 英寸 · 接入 CIG-AI，<br class="hero__br" />
+                  把影像、性能与续航装进轻薄机身。
+                </p>
+                <ul class="hero__specs">
+                  <li>AI 影像</li>
+                  <li>轻薄机身</li>
+                  <li>持久续航</li>
+                </ul>
+                <div class="hero__actions">
+                  <a class="btn-ink btn-ink--phone" href="products.html?q=CPhone%20ING">探索 CPhone ING</a>
+                </div>
+              </div>
+
+              <div class="hero__visual">
+                <img
+                  class="hero__art-img hero__art-img--phone"
+                  src="assets/home/hero-phone.jpg"
+                  alt="CPhone ING 手机正面与背面"
+                  loading="eager"
+                />
+                <span class="hero__caption">CPhone ING</span>
+              </div>
+            </article>
+
           </div>
         </div>
 
-        <div class="hero__visual" aria-hidden="true">
-          <span class="hero__glow"></span>
-          <span class="hero__ring"></span>
-          <svg class="hero__art hero__art--laptop" viewBox="0 0 320 220"><use href="#art-laptop" /></svg>
-          <svg class="hero__art hero__art--phone" viewBox="0 0 320 220"><use href="#art-phone" /></svg>
-          <span class="hero__caption">CBook Air X ／ CPhone 21 Pro Max</span>
+        <div class="hero__dots" id="heroDots" role="tablist" aria-label="首屏商品切换">
+          <button class="hero__dot is-active" type="button" role="tab" data-index="0" aria-selected="true">
+            <span class="hero__dot-bar" aria-hidden="true"><i></i></span>
+            <span class="hero__dot-name">CBook Fold Light</span>
+          </button>
+          <button class="hero__dot" type="button" role="tab" data-index="1" aria-selected="false">
+            <span class="hero__dot-bar" aria-hidden="true"><i></i></span>
+            <span class="hero__dot-name">CPhone ING</span>
+          </button>
         </div>
       </div>
     </section>
 
-    <!-- ==================== 分类入口 ==================== -->
+    <!-- ==================== 品类入口 ==================== -->
+    <section class="section section--collections">
+      <div class="section__head">
+        <div>
+          <p class="section__eyebrow">Collections · 2026</p>
+          <h2 class="section__title">按你的方式，组一套设备</h2>
+          <p class="section__sub">同一个系统，不同的日常。从口袋到桌面，都能接上。</p>
+        </div>
+        <a class="link-more" href="products.html">
+          全部商品
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
+        </a>
+      </div>
+
+      <div class="ed-collections">
+        <a class="ed-collection ed-collection--phone" href="products.html?cat=cphone" aria-label="浏览 CPhone 系列">
+          <span class="ed-collection__top">
+            <span class="ed-collection__index">01</span>
+            <span class="ed-collection__name">CPhone</span>
+            <span class="ed-collection__arrow" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" /></svg>
+            </span>
+          </span>
+          <img class="ed-collection__img" src="assets/billboard/cphone-ing-cutout.webp" alt="CPhone ING 正面与背面" loading="lazy" decoding="async" />
+          <span class="ed-collection__caption">影像与 AI，随身携带</span>
+        </a>
+
+        <a class="ed-collection ed-collection--pad" href="products.html?cat=cpad" aria-label="浏览 CPad 系列">
+          <span class="ed-collection__top">
+            <span class="ed-collection__index">02</span>
+            <span class="ed-collection__name">CPad</span>
+            <span class="ed-collection__arrow" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" /></svg>
+            </span>
+          </span>
+          <img class="ed-collection__img" src="assets/products/cpad-lion8.png" alt="CPad Lion 8" loading="lazy" decoding="async" />
+          <span class="ed-collection__caption">灵感，随手展开</span>
+        </a>
+
+        <a class="ed-collection ed-collection--book" href="products.html?cat=cbook" aria-label="浏览 CBook 系列">
+          <span class="ed-collection__top">
+            <span class="ed-collection__index">03</span>
+            <span class="ed-collection__name">CBook</span>
+            <span class="ed-collection__arrow" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" /></svg>
+            </span>
+          </span>
+          <img class="ed-collection__img" src="assets/products/cbook-fold.jpg" alt="CBook Fold Light" loading="lazy" decoding="async" />
+          <span class="ed-collection__caption">把创作，折叠起来</span>
+        </a>
+
+        <a class="ed-collection ed-collection--max" href="products.html?cat=accessories" aria-label="浏览配件系列">
+          <span class="ed-collection__top">
+            <span class="ed-collection__index">04</span>
+            <span class="ed-collection__name">配件</span>
+            <span class="ed-collection__arrow" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" /></svg>
+            </span>
+          </span>
+          <img class="ed-collection__img" src="assets/billboard/cmaxing-cutout.png" alt="CMaxing 头戴式耳机" loading="lazy" decoding="async" />
+          <span class="ed-collection__caption">该有的，都配齐</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ==================== 新品探寻 ==================== -->
     <section class="section">
       <div class="section__head">
         <div>
+          <p class="section__eyebrow">New Arrivals</p>
           <h2 class="section__title">新品探寻</h2>
           <p class="section__sub">崭新生活，覆盖移动、创作与随身配件</p>
         </div>
@@ -253,17 +372,36 @@
       <div class="product-grid" id="newGrid"></div>
     </section>
 
+    <!-- ==================== CIG-AI 叙事 ==================== -->
+    <section class="section section--story">
+      <div class="ed-story">
+        <div class="ed-story__copy">
+          <p class="ed-story__eyebrow">CIG-AI · On-device</p>
+          <h2 class="ed-story__title">AI 不在云端，<br />在指尖。</h2>
+          <p class="ed-story__text">
+            CPhone ING 把 CIG-AI 直接跑在手机上。影像、翻译、摘要，不用等网络，也不用交出隐私。
+          </p>
+          <a class="ed-story__cta" href="product.html?id=cphone-ing">
+            探索 CPhone ING
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          </a>
+        </div>
+        <div class="ed-story__visual">
+          <span class="ed-story__halo" aria-hidden="true"></span>
+          <img class="ed-story__img" src="assets/billboard/cphone-ing-cutout.webp" alt="CPhone ING 正面与背面" loading="lazy" decoding="async" />
+          <span class="ed-story__caption">CPhone ING · 冰海蓝</span>
+        </div>
+      </div>
+    </section>
+
     <!-- ==================== 精选产品 ==================== -->
     <section class="section">
       <div class="section__head">
         <div>
+          <p class="section__eyebrow">Curated Selection</p>
           <h2 class="section__title">精选产品</h2>
           <p class="section__sub">每一件都值得放进日常</p>
         </div>
-        <button class="link-more" type="button" id="viewAll">
-          查看全部
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
-        </button>
       </div>
 
       <div class="product-grid" id="featuredGrid"></div>
@@ -293,10 +431,15 @@
   <!-- 轻提示 -->
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="js/auth.js?v=118"></script>
-  <script src="js/products.js?v=118"></script>
-  <script src="js/cart.js?v=118"></script>
-  <script src="js/nav.js?v=118"></script>
-  <script src="js/home.js?v=118"></script>
+  <script src="js/auth.js?v=148"></script>
+  <script src="js/products.js?v=149"></script>
+  <script src="js/cart.js?v=148"></script>
+  <script src="js/orders.js?v=148"></script>
+  <script src="js/nav.js?v=150"></script>
+  <script src="js/home.js?v=148"></script>
+  <script src="js/hero-slider.js?v=148"></script>
+  <script src="js/ai-endpoint.js?v=1"></script>
+  <script src="js/assistant-tools.js?v=4"></script>
+  <script src="js/assistant.js?v=4"></script>
 </body>
 </html>

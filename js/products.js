@@ -24,17 +24,18 @@
 
   var PRODUCTS = [
     {
-      id: "cphone-20",
-      name: "CPhone 20",
-      desc: "6.3 英寸 · 柔光玻璃背板",
-      price: 3999,
+      id: "cphone-ing",
+      name: "CPhone ING",
+      desc: "6.5 英寸 · 接入 CIG-AI",
+      price: 5999,
       category: "cphone",
       art: "phone",
-      image: "assets/products/cphone-20.jpg",
-      zoom: 0.88,
-      tags: ["四色", "轻薄"],
-      keywords: ["手机", "cphone", "20", "6.3", "粉色", "柔光"],
-      stock: 20,
+      isNew: true,
+      image: "assets/products/cphone-ing.jpg",
+      zoom: 0.95,
+      tags: ["CIG-AI", "新品"],
+      keywords: ["手机", "cphone", "ing", "6.5", "ai", "cig-ai", "智能"],
+      stock: 14,
       palette: ["#fbfbfc", "#f1f3f5"],
     },
     {
@@ -83,18 +84,17 @@
       palette: ["#fbfbfc", "#f1f3f5"],
     },
     {
-      id: "cphone-ing",
-      name: "CPhone ING",
-      desc: "6.5 英寸 · 接入 CIG-AI",
-      price: 5999,
+      id: "cphone-20",
+      name: "CPhone 20",
+      desc: "6.3 英寸 · 柔光玻璃背板",
+      price: 3999,
       category: "cphone",
       art: "phone",
-      isNew: true,
-      image: "assets/products/cphone-ing.jpg",
-      zoom: 0.95,
-      tags: ["CIG-AI", "新品"],
-      keywords: ["手机", "cphone", "ing", "6.5", "ai", "cig-ai", "智能"],
-      stock: 14,
+      image: "assets/products/cphone-20.jpg",
+      zoom: 0.88,
+      tags: ["四色", "轻薄"],
+      keywords: ["手机", "cphone", "20", "6.3", "粉色", "柔光"],
+      stock: 20,
       palette: ["#fbfbfc", "#f1f3f5"],
     },
     {
@@ -110,22 +110,6 @@
       keywords: ["手机", "cphone", "sg", "小屏", "6.0", "compact"],
       stock: 12,
       palette: ["#fbfbfc", "#f1f3f5"],
-    },
-    {
-      id: "cpad-air-11",
-      name: "CPad Air",
-      desc: "11 英寸 · 轻办公搭档",
-      price: 4999,
-      category: "cpad",
-      art: "tablet",
-      isNew: true,
-      image: "assets/products/cpad-air.png",
-      cutout: true,
-      zoom: 0.95,
-      tags: ["轻薄", "新品"],
-      keywords: ["平板", "cpad", "air", "11", "轻薄"],
-      stock: 20,
-      palette: ["#f6f8fb", "#e9eef4"],
     },
     {
       id: "cpad-mini-8",
@@ -158,6 +142,22 @@
       palette: ["#fbfbfc", "#f1f3f5"],
     },
     {
+      id: "cpad-air-11",
+      name: "CPad Air",
+      desc: "11 英寸 · 轻办公搭档",
+      price: 4999,
+      category: "cpad",
+      art: "tablet",
+      isNew: true,
+      image: "assets/products/cpad-air.png",
+      cutout: true,
+      zoom: 0.95,
+      tags: ["轻薄", "新品"],
+      keywords: ["平板", "cpad", "air", "11", "轻薄"],
+      stock: 20,
+      palette: ["#f6f8fb", "#e9eef4"],
+    },
+    {
       id: "cpad-board",
       name: "CPad Board",
       desc: "11 英寸 · 磁吸键盘套装",
@@ -170,6 +170,35 @@
       tags: ["键盘", "新品"],
       keywords: ["平板", "cpad", "board", "键盘", "磁吸", "套装"],
       stock: 18,
+      palette: ["#fbfbfc", "#f1f3f5"],
+    },
+    {
+      id: "cbook-fold",
+      name: "CBook Fold Light",
+      desc: "折叠双屏 · 轻量创作",
+      price: 14999,
+      category: "cbook",
+      art: "laptop",
+      isNew: true,
+      image: "assets/products/cbook-fold.jpg",
+      zoom: 0.95,
+      tags: ["折叠屏", "双屏"],
+      keywords: ["笔记本", "电脑", "cbook", "fold", "折叠", "双屏", "轻量"],
+      stock: 8,
+      palette: ["#fbfbfc", "#f1f3f5"],
+    },
+    {
+      id: "cbook-tai",
+      name: "CBook TAI",
+      desc: "23.8 英寸 · 一体机",
+      price: 8999,
+      category: "cbook",
+      art: "laptop",
+      image: "assets/products/cbook-tai.jpg",
+      zoom: 0.92,
+      tags: ["一体机", "新品"],
+      keywords: ["一体机", "台式", "cbook", "tai", "23.8", "创作"],
+      stock: 9,
       palette: ["#fbfbfc", "#f1f3f5"],
     },
     {
@@ -201,32 +230,33 @@
       palette: ["#fbfbfc", "#f1f3f5"],
     },
     {
-      id: "cbook-tai",
-      name: "CBook TAI",
-      desc: "23.8 英寸 · 一体机",
-      price: 8999,
-      category: "cbook",
-      art: "laptop",
-      image: "assets/products/cbook-tai.jpg",
-      zoom: 0.92,
-      tags: ["一体机", "新品"],
-      keywords: ["一体机", "台式", "cbook", "tai", "23.8", "创作"],
-      stock: 9,
+      id: "cmaxing",
+      name: "CMaxing",
+      desc: "头戴式 · 主动降噪",
+      price: 1999,
+      category: "accessories",
+      art: "headphones",
+      isNew: true,
+      image: "assets/products/cmaxing.jpg",
+      zoom: 0.9,
+      tags: ["头戴式", "降噪"],
+      keywords: ["耳机", "头戴式", "cmaxing", "降噪", "配件"],
+      stock: 15,
       palette: ["#fbfbfc", "#f1f3f5"],
     },
     {
-      id: "cbook-fold",
-      name: "CBook Fold Light",
-      desc: "折叠双屏 · 轻量创作",
-      price: 14999,
-      category: "cbook",
-      art: "laptop",
+      id: "cwatch",
+      name: "CWatch",
+      desc: "智能手表 · 健康监测",
+      price: 1299,
+      category: "accessories",
+      art: "phone",
       isNew: true,
-      image: "assets/products/cbook-fold.jpg",
-      zoom: 0.95,
-      tags: ["折叠屏", "双屏"],
-      keywords: ["笔记本", "电脑", "cbook", "fold", "折叠", "双屏", "轻量"],
-      stock: 8,
+      image: "assets/products/cwatch.jpg",
+      zoom: 0.92,
+      tags: ["智能手表", "健康"],
+      keywords: ["手表", "智能手表", "cwatch", "健康", "运动", "配件"],
+      stock: 20,
       palette: ["#fbfbfc", "#f1f3f5"],
     },
     {
@@ -258,21 +288,6 @@
       palette: ["#fbfbfc", "#f1f3f5"],
     },
     {
-      id: "cmaxing",
-      name: "CMaxing",
-      desc: "头戴式 · 主动降噪",
-      price: 1999,
-      category: "accessories",
-      art: "headphones",
-      isNew: true,
-      image: "assets/products/cmaxing.jpg",
-      zoom: 0.9,
-      tags: ["头戴式", "降噪"],
-      keywords: ["耳机", "头戴式", "cmaxing", "降噪", "配件"],
-      stock: 15,
-      palette: ["#fbfbfc", "#f1f3f5"],
-    },
-    {
       id: "cpower-usb-head",
       name: "CPower-USB 充电头",
       desc: "60W · 单口快充",
@@ -299,21 +314,6 @@
       keywords: ["数据线", "充电线", "type-c", "usb-c", "60w", "cpower", "配件"],
       stock: 60,
       palette: ["#ffffff", "#ffffff"],
-    },
-    {
-      id: "cwatch",
-      name: "CWatch",
-      desc: "智能手表 · 健康监测",
-      price: 1299,
-      category: "accessories",
-      art: "phone",
-      isNew: true,
-      image: "assets/products/cwatch.jpg",
-      zoom: 0.92,
-      tags: ["智能手表", "健康"],
-      keywords: ["手表", "智能手表", "cwatch", "健康", "运动", "配件"],
-      stock: 20,
-      palette: ["#fbfbfc", "#f1f3f5"],
     },
     {
       id: "ccube",
@@ -428,9 +428,9 @@
       .filter(Boolean);
   }
 
-  /* 精选：笔记本 → 手机 → 平板 → 头戴耳机 */
+  /* 精选：笔记本 → 真无线耳机 → 平板 → 充电头 */
   function featured() {
-    return pick(["cbook-air-14", "cphone-21", "cpad-air-11", "cpairs"]);
+    return pick(["cbook-air-14", "cpairs", "cpad-board", "cpower-usb-head"]);
   }
 
   /* 首页「新品探寻」固定展示的四款 */
@@ -467,6 +467,13 @@
     });
   }
 
+  /* 已经做好详情页的商品（详情内容见 js/product-detail.js） */
+  var DETAIL_IDS = ["cphone-ing", "cpad-mini-8", "cbook-fold", "cmaxing", "cwatch"];
+
+  function hasDetail(id) {
+    return DETAIL_IDS.indexOf(id) > -1;
+  }
+
   function byCategory(category) {
     return PRODUCTS.filter(function (item) {
       return item.category === category;
@@ -481,6 +488,7 @@
     newArrivals: newArrivals,
     search: search,
     byCategory: byCategory,
+    hasDetail: hasDetail,
     formatPrice: formatPrice,
     renderCard: renderCard,
   };

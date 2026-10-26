@@ -1,0 +1,478 @@
+/* ============================================================
+   新品三联广告牌 · 三面来见
+   ------------------------------------------------------------
+   仅出现在新品页（html.is-new，products.html?new=1）。
+   静态画面：冰蓝、酒红、钴蓝融合成一整块舞台，
+   CPhone ING、CPad Lion 8、CMaxing 三款新品同台陈列。
+   ============================================================ */
+
+.na-board {
+  display: none;
+}
+
+html.is-new .na-board {
+  display: block;
+}
+
+html.is-new .page-head {
+  display: none;
+}
+
+.na-board {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: clamp(16px, 2.2vw, 26px) clamp(16px, 3vw, 28px) 0;
+}
+
+/* ---------------- 舞台 ---------------- */
+
+.na-board__stage {
+  position: relative;
+  height: clamp(460px, 36vw, 520px);
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: clamp(20px, 2vw, 28px);
+  border: 1px solid rgba(178, 200, 232, 0.15);
+  background: #06080e;
+  box-shadow:
+    0 46px 96px -68px rgba(0, 0, 0, 0.98),
+    inset 0 1px 0 rgba(206, 226, 255, 0.1);
+}
+
+/* 融合背景：左冰蓝、中酒红、右钴蓝，地面反射线固定在同一高度 */
+.na-board__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: url("../assets/billboard/new-arrivals-fusion-bg.jpg") 50% 50% / 100% 100% no-repeat;
+  filter: saturate(1.04) brightness(0.96) contrast(1.03);
+}
+
+/* ---------------- 文案 ---------------- */
+
+.na-board__copy {
+  position: absolute;
+  z-index: 7;
+  top: clamp(22px, 6%, 32px);
+  left: 50%;
+  width: min(42%, 440px);
+  transform: translateX(-50%);
+  text-align: center;
+  color: #f4f8ff;
+}
+
+.na-board__copy::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -42% -22% -50% -22%;
+  pointer-events: none;
+  background: radial-gradient(58% 58% at 50% 50%, rgba(3, 6, 11, 0.56), transparent 78%);
+  filter: blur(22px);
+}
+
+.na-board__rule {
+  display: block;
+  width: 44px;
+  height: 1px;
+  margin: 0 auto clamp(10px, 1.3vw, 13px);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(232, 242, 255, 0.92) 50%,
+    transparent 100%
+  );
+  box-shadow: 0 0 12px rgba(170, 205, 255, 0.36);
+}
+
+.na-board__eyebrow {
+  margin: 0;
+  font-size: clamp(9px, 0.82vw, 10.5px);
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  color: rgba(226, 238, 255, 0.66);
+  white-space: nowrap;
+  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+}
+
+.na-board__title {
+  margin: clamp(8px, 1vw, 10px) 0 0;
+  font-size: clamp(30px, 3.3vw, 44px);
+  font-weight: 650;
+  line-height: 1.06;
+  letter-spacing: -0.035em;
+  white-space: nowrap;
+  text-shadow: 0 12px 40px rgba(0, 0, 0, 0.52);
+}
+
+.na-board__title em {
+  font-style: normal;
+  background: linear-gradient(100deg, #d9edff 0%, #ffd2da 50%, #a9c8ff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.na-board__tagline {
+  margin: clamp(9px, 1vw, 11px) 0 0;
+  font-size: clamp(11px, 1vw, 13px);
+  font-weight: 400;
+  letter-spacing: 0.17em;
+  color: rgba(222, 235, 255, 0.72);
+  white-space: nowrap;
+  text-shadow: 0 4px 18px rgba(0, 0, 0, 0.55);
+}
+
+/* ---------------- 三款产品 ---------------- */
+
+.na-board__item {
+  position: absolute;
+  z-index: 4;
+  bottom: 26%;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.na-board__item--phone {
+  left: 18.5%;
+  width: 17.2%;
+  aspect-ratio: 717 / 926;
+}
+
+.na-board__item--pad {
+  left: 50%;
+  width: 19.6%;
+  aspect-ratio: 900 / 836;
+}
+
+.na-board__item--max {
+  left: 81.5%;
+  width: 18.2%;
+  aspect-ratio: 830 / 1056;
+}
+
+.na-board__halo {
+  position: absolute;
+  z-index: 0;
+  left: 50%;
+  bottom: -4%;
+  width: 150%;
+  height: 76%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(32px);
+  mix-blend-mode: screen;
+}
+
+.na-board__item--phone .na-board__halo {
+  background: radial-gradient(closest-side, rgba(150, 200, 255, 0.3), transparent 74%);
+}
+
+.na-board__item--pad .na-board__halo {
+  background: radial-gradient(closest-side, rgba(206, 96, 124, 0.28), transparent 74%);
+}
+
+.na-board__item--max .na-board__halo {
+  background: radial-gradient(closest-side, rgba(82, 130, 224, 0.34), transparent 74%);
+}
+
+.na-board__img {
+  position: relative;
+  z-index: 2;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter:
+    saturate(1.02)
+    drop-shadow(0 26px 30px rgba(0, 0, 0, 0.55));
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.na-board__contact {
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  bottom: -1.5%;
+  width: 86%;
+  height: 9%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(closest-side, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.18) 60%, transparent 80%);
+  filter: blur(7px);
+}
+
+.na-board__item--phone .na-board__img {
+  filter:
+    saturate(1.02)
+    drop-shadow(0 26px 30px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 0 24px rgba(146, 196, 255, 0.2));
+}
+
+.na-board__item--pad .na-board__img {
+  filter:
+    saturate(1.02)
+    drop-shadow(0 26px 30px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 0 26px rgba(218, 112, 140, 0.2));
+}
+
+.na-board__item--max .na-board__img {
+  filter:
+    saturate(1.02)
+    drop-shadow(0 26px 30px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 0 26px rgba(96, 146, 236, 0.24));
+}
+
+/* ---------------- 产品索引 ---------------- */
+
+.na-board__labels {
+  position: absolute;
+  z-index: 6;
+  left: 0;
+  right: 0;
+  bottom: calc(26% - 40px);
+  pointer-events: none;
+}
+
+.na-board__label {
+  position: absolute;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: baseline;
+  gap: 7px;
+  font-size: clamp(9.5px, 0.85vw, 11px);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  color: rgba(235, 244, 255, 0.72);
+  white-space: nowrap;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7);
+}
+
+.na-board__label i {
+  font-style: normal;
+  font-size: 0.82em;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.na-board__label--phone {
+  left: 18.5%;
+}
+
+.na-board__label--pad {
+  left: 50%;
+}
+
+.na-board__label--max {
+  left: 81.5%;
+}
+
+/* ---------------- 收尾质感 ---------------- */
+
+.na-board__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(3, 6, 11, 0.44) 0%, rgba(3, 6, 11, 0.06) 26%, transparent 46%),
+    linear-gradient(0deg, rgba(3, 5, 9, 0.5) 0%, transparent 24%);
+}
+
+.na-board__vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  pointer-events: none;
+  background: radial-gradient(120% 100% at 50% 54%, transparent 52%, rgba(2, 4, 8, 0.5) 100%);
+}
+
+.na-board__grain {
+  position: absolute;
+  inset: 0;
+  z-index: 9;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: soft-light;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>");
+  background-size: 180px 180px;
+}
+
+/* ---------------- 自适应 ---------------- */
+
+@media (max-width: 1100px) {
+  .na-board__stage {
+    height: clamp(410px, 45vw, 470px);
+  }
+
+  .na-board__copy {
+    top: clamp(20px, 5%, 28px);
+    width: min(40%, 380px);
+  }
+
+  .na-board__title {
+    font-size: clamp(28px, 3.8vw, 38px);
+  }
+
+  .na-board__tagline {
+    letter-spacing: 0.15em;
+  }
+
+  .na-board__item--phone {
+    left: 19%;
+    width: 19%;
+  }
+
+  .na-board__item--pad {
+    width: 21.5%;
+  }
+
+  .na-board__item--max {
+    left: 81%;
+    width: 20%;
+  }
+
+  .na-board__label--phone {
+    left: 19%;
+  }
+
+  .na-board__label--max {
+    left: 81%;
+  }
+}
+
+@media (max-width: 720px) {
+  .na-board {
+    padding: 14px 14px 0;
+  }
+
+  .na-board__stage {
+    height: clamp(430px, 80vw, 500px);
+  }
+
+  .na-board__copy {
+    top: 28px;
+    width: calc(100% - 56px);
+    max-width: 420px;
+  }
+
+  .na-board__copy::before {
+    inset: -34% -12% -42% -12%;
+  }
+
+  .na-board__eyebrow {
+    font-size: 9px;
+    letter-spacing: 0.24em;
+  }
+
+  .na-board__title {
+    font-size: clamp(27px, 7vw, 34px);
+  }
+
+  .na-board__tagline {
+    font-size: 10.5px;
+    letter-spacing: 0.12em;
+  }
+
+  .na-board__item--phone {
+    left: 19%;
+    width: 22%;
+  }
+
+  .na-board__item--pad {
+    width: 25%;
+  }
+
+  .na-board__item--max {
+    left: 81%;
+    width: 23%;
+  }
+
+  .na-board__label--phone {
+    left: 19%;
+  }
+
+  .na-board__label--max {
+    left: 81%;
+  }
+
+  .na-board__label {
+    gap: 5px;
+    font-size: 9.5px;
+    letter-spacing: 0.1em;
+  }
+}
+
+@media (max-width: 560px) {
+  .na-board__stage {
+    height: clamp(430px, 115vw, 500px);
+  }
+
+  .na-board__copy {
+    top: 24px;
+    width: calc(100% - 44px);
+  }
+
+  .na-board__rule {
+    width: 34px;
+    margin-bottom: 10px;
+  }
+
+  .na-board__title {
+    font-size: clamp(26px, 7.2vw, 32px);
+  }
+
+  .na-board__tagline {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+  }
+
+  .na-board__item--phone {
+    left: 18%;
+    width: 33%;
+  }
+
+  .na-board__item--pad {
+    width: 38%;
+  }
+
+  .na-board__item--max {
+    left: 81%;
+    width: 34%;
+  }
+
+  .na-board__label--phone {
+    left: 18%;
+  }
+
+  .na-board__label--max {
+    left: 81%;
+  }
+
+  .na-board__labels {
+    bottom: calc(26% - 34px);
+  }
+
+  .na-board__label {
+    font-size: 9px;
+    letter-spacing: 0.08em;
+  }
+}
+
+@media (max-width: 380px) {
+  .na-board__title {
+    font-size: 26px;
+  }
+
+  .na-board__tagline {
+    font-size: 9.5px;
+  }
+
+  .na-board__label i {
+    display: none;
+  }
+}

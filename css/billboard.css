@@ -1,0 +1,1459 @@
+/* ============================================================
+   CPhone ING · AI 广告牌
+   ------------------------------------------------------------
+   仅出现在 CPhone 分类页（html.is-cphone）。
+   一段循环播放的产品短片：手机自雾中升起 → 屏幕亮起 →
+   冰蓝流体壁纸溢出 → 海浪拍上机身，作为收尾。
+   ============================================================ */
+
+.cphone-board {
+  display: none;
+}
+
+html.is-cphone .cphone-board {
+  display: block;
+}
+
+html.is-cphone .page-head {
+  display: none;
+}
+
+.cphone-board {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: clamp(16px, 2.2vw, 26px) clamp(16px, 3vw, 28px) 0;
+}
+
+/* ---------------- 舞台 ---------------- */
+
+.cphone-board__stage {
+  position: relative;
+  height: clamp(360px, 30vw, 436px);
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: clamp(20px, 2vw, 28px);
+  background:
+    radial-gradient(64% 96% at 71% 26%, rgba(24, 82, 132, 0.4), transparent 66%),
+    radial-gradient(86% 74% at 20% 112%, rgba(11, 64, 108, 0.34), transparent 68%),
+    linear-gradient(180deg, #02050a 0%, #040a12 54%, #06131f 100%);
+  box-shadow:
+    0 46px 96px -68px rgba(0, 22, 44, 0.92),
+    inset 0 1px 0 rgba(214, 240, 255, 0.1);
+  border: 1px solid rgba(142, 195, 236, 0.13);
+  animation: board-enter 1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.cphone-board__stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    radial-gradient(46% 54% at 70% 18%, rgba(154, 219, 255, 0.11), transparent 72%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 16%);
+  mix-blend-mode: screen;
+}
+
+.cphone-board__stage::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  left: 8%;
+  right: 8%;
+  top: 64%;
+  height: 1px;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(118, 196, 255, 0.18) 26%,
+    rgba(188, 232, 255, 0.42) 58%,
+    transparent 100%
+  );
+  filter: blur(0.4px);
+  opacity: 0.7;
+}
+
+/* ---------------- 氛围层 ---------------- */
+
+.cphone-board__blob {
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+  border-radius: 50%;
+  mix-blend-mode: screen;
+  filter: blur(48px);
+}
+
+.cphone-board__blob--1 {
+  left: 48%;
+  top: -16%;
+  width: 40%;
+  height: 116%;
+  opacity: 0.5;
+  background: radial-gradient(closest-side, rgba(92, 183, 240, 0.42), transparent 72%);
+  animation: board-drift-a 26s ease-in-out infinite alternate;
+}
+
+.cphone-board__blob--2 {
+  left: -8%;
+  bottom: -32%;
+  width: 52%;
+  height: 76%;
+  opacity: 0.36;
+  background: radial-gradient(closest-side, rgba(40, 118, 174, 0.5), transparent 72%);
+  animation: board-drift-b 30s ease-in-out infinite alternate;
+}
+
+.cphone-board__spill {
+  position: absolute;
+  z-index: 1;
+  left: 16%;
+  top: -10%;
+  width: 58%;
+  height: 120%;
+  pointer-events: none;
+  opacity: 0.44;
+  background: url("../assets/billboard/cphone-wallpaper.jpg") 70% 46% / cover no-repeat;
+  filter: blur(38px) saturate(1.45) brightness(0.62);
+  mix-blend-mode: screen;
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 0, 0, 0.22) 30%,
+    rgba(0, 0, 0, 0.7) 66%,
+    #000 100%
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 0, 0, 0.22) 30%,
+    rgba(0, 0, 0, 0.7) 66%,
+    #000 100%
+  );
+  animation: board-spill 26s ease-in-out infinite alternate;
+}
+
+.cphone-board__haze {
+  position: absolute;
+  z-index: 1;
+  left: 22%;
+  top: 40%;
+  width: 58%;
+  height: 22%;
+  pointer-events: none;
+  border-radius: 50%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(128, 201, 244, 0.16) 34%,
+    rgba(203, 238, 255, 0.22) 62%,
+    transparent 100%
+  );
+  filter: blur(26px);
+  mix-blend-mode: screen;
+  animation: board-haze 24s ease-in-out infinite alternate;
+}
+
+.cphone-board__dust {
+  position: absolute;
+  inset: -3%;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0.55;
+  background:
+    radial-gradient(circle at 18% 34%, rgba(214, 242, 255, 0.7) 0 1px, transparent 1.6px),
+    radial-gradient(circle at 43% 20%, rgba(194, 230, 255, 0.5) 0 1px, transparent 1.7px),
+    radial-gradient(circle at 79% 33%, rgba(224, 245, 255, 0.6) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 88% 61%, rgba(186, 226, 255, 0.45) 0 1px, transparent 1.7px),
+    radial-gradient(circle at 65% 74%, rgba(212, 240, 255, 0.5) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 28% 79%, rgba(198, 232, 255, 0.42) 0 1px, transparent 1.6px);
+  animation: board-dust 30s ease-in-out infinite alternate;
+}
+
+/* ---------------- 手机 ---------------- */
+
+.cphone-board__device {
+  position: absolute;
+  z-index: 3;
+  top: 1.8%;
+  left: 60.5%;
+  height: 114%;
+  width: auto;
+  aspect-ratio: 9 / 19.2;
+  pointer-events: none;
+  animation: board-device-rise 1.5s 0.3s cubic-bezier(0.16, 0.84, 0.3, 1) both;
+}
+
+.cphone-board__aura {
+  position: absolute;
+  z-index: -1;
+  inset: -16% -54% -12% -58%;
+  border-radius: 50%;
+  background:
+    radial-gradient(closest-side, rgba(137, 219, 255, 0.5), transparent 68%),
+    radial-gradient(closest-side at 50% 68%, rgba(44, 138, 208, 0.44), transparent 74%);
+  filter: blur(38px);
+  mix-blend-mode: screen;
+  animation: board-aura 2.4s 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.cphone-board__float {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  animation: board-float 9s 2.1s ease-in-out infinite alternate;
+}
+
+.cphone-board__body {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: clamp(4px, 0.45vw, 6px);
+  border-radius: 13.4% / 6.28%;
+  background:
+    linear-gradient(
+      103deg,
+      #f2f8fc 0%,
+      #bccad6 3%,
+      #5c6a78 7%,
+      #28333d 13%,
+      #10171e 32%,
+      #0a1016 62%,
+      #232e38 84%,
+      #8796a4 96%,
+      #eef6fc 100%
+    );
+  box-shadow:
+    0 0 0 1px rgba(204, 231, 250, 0.26),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.16),
+    0 34px 74px -26px rgba(0, 0, 0, 0.85),
+    0 0 54px -8px rgba(71, 170, 240, 0.24);
+  transform: rotate(-1.3deg);
+  transform-origin: 52% 66%;
+}
+
+/* 左侧音量键 / 右侧电源键 */
+.cphone-board__body::before {
+  content: "";
+  position: absolute;
+  left: -2px;
+  top: 21%;
+  width: 2px;
+  height: 18%;
+  border-radius: 2px 0 0 2px;
+  background: linear-gradient(
+    180deg,
+    rgba(206, 221, 233, 0.92) 0%,
+    rgba(118, 134, 148, 0.9) 36%,
+    rgba(206, 221, 233, 0.92) 40%,
+    rgba(118, 134, 148, 0.9) 60%,
+    transparent 60%,
+    transparent 100%
+  );
+  box-shadow: 0 0 4px rgba(160, 220, 255, 0.3);
+}
+
+.cphone-board__body::after {
+  content: "";
+  position: absolute;
+  right: -2px;
+  top: 29%;
+  width: 2px;
+  height: 9%;
+  border-radius: 0 2px 2px 0;
+  background: linear-gradient(180deg, #cfdde8, #6a7885 55%, #dbe8f2);
+  box-shadow: 0 0 4px rgba(160, 220, 255, 0.28);
+}
+
+.cphone-board__screen {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  container-type: size;
+  border-radius: 12% / 5.86%;
+  background: #010409;
+  box-shadow:
+    inset 0 0 0 2px #02060a,
+    inset 0 0 28px rgba(0, 0, 0, 0.9);
+}
+
+/* 壁纸偏色 + 暗部压深，把原本偏白的素材调成深夜冰蓝 */
+.cphone-board__screen::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(152deg, #35a6d8 0%, #1a6f9d 46%, #0a3555 100%);
+  mix-blend-mode: color;
+  opacity: 0.45;
+}
+
+.cphone-board__screen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    linear-gradient(178deg, rgba(3, 20, 36, 0.1) 0%, rgba(2, 16, 30, 0.1) 38%, rgba(1, 8, 16, 0.4) 100%),
+    radial-gradient(84% 48% at 50% 28%, rgba(130, 220, 255, 0.2), transparent 74%);
+  mix-blend-mode: multiply;
+}
+
+.cphone-board__wall {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: block;
+  overflow: hidden;
+  opacity: 0;
+  animation: board-wall-in 1.8s 1.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.cphone-board__wall-img {
+  position: absolute;
+  inset: -8%;
+  display: block;
+  background: url("../assets/billboard/cphone-wallpaper.jpg") 56% 42% / cover no-repeat;
+  filter: saturate(1.48) contrast(1.08) brightness(0.73);
+  animation: board-wall-drift 30s ease-in-out infinite alternate;
+}
+
+.cphone-board__notch {
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  top: 2.1%;
+  width: 31%;
+  height: 2.7%;
+  min-height: 11px;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: #000;
+  box-shadow:
+    inset 0 0 0 1px rgba(124, 181, 222, 0.1),
+    0 1px 3px rgba(0, 0, 0, 0.7);
+}
+
+.cphone-board__notch::before {
+  content: "";
+  position: absolute;
+  right: 18%;
+  top: 50%;
+  width: 34%;
+  aspect-ratio: 1;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background: radial-gradient(circle at 36% 30%, #35556e 0%, #0a1a26 46%, #010407 100%);
+  box-shadow: 0 0 0 1px rgba(118, 176, 216, 0.1);
+}
+
+.cphone-board__notch::after {
+  content: "";
+  position: absolute;
+  right: 25.5%;
+  top: 34%;
+  width: 7%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: rgba(154, 216, 255, 0.6);
+  filter: blur(0.5px);
+}
+
+/* ---------------- AI ---------------- */
+
+.cphone-board__ai {
+  position: absolute;
+  inset: 0 0 14% 0;
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  animation: board-ai-in 1.4s 1.9s cubic-bezier(0.16, 0.84, 0.3, 1) both;
+}
+
+.cphone-board__ai::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 118%;
+  height: 58%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(151, 222, 255, 0.3), transparent 74%);
+  filter: blur(12px);
+  mix-blend-mode: screen;
+}
+
+.cphone-board__ai-text {
+  position: relative;
+  display: block;
+  font-family: "SF Pro Display", -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  font-size: clamp(96px, 9.6vw, 142px);
+  font-size: 70cqw;
+  font-weight: 680;
+  line-height: 0.9;
+  letter-spacing: -0.055em;
+  white-space: nowrap;
+  user-select: none;
+  background: linear-gradient(
+    160deg,
+    #ffffff 0%,
+    #ffffff 34%,
+    rgba(224, 246, 255, 0.99) 54%,
+    #ffffff 76%,
+    #ffffff 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  filter: drop-shadow(0 0 20px rgba(232, 250, 255, 0.8))
+    drop-shadow(0 0 64px rgba(117, 206, 255, 0.6));
+  animation: board-ai-breathe 7.5s 3.4s ease-in-out infinite;
+  will-change: transform;
+}
+
+.cphone-board__ai-text::before {
+  content: "AI";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  color: rgba(200, 238, 255, 0.9);
+  -webkit-text-fill-color: currentColor;
+  background: none;
+  filter: blur(22px);
+  transform: scale(1.06);
+  animation: board-ai-halo 7.5s 3.4s ease-in-out infinite;
+}
+
+.cphone-board__ai-text::after {
+  content: "AI";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: 0.8px rgba(255, 255, 255, 0.42);
+  background: none;
+  filter: none;
+}
+
+.cphone-board__ignite {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(
+    52% 42% at 50% 50%,
+    rgba(234, 250, 255, 0.95) 0%,
+    rgba(128, 211, 255, 0.46) 38%,
+    transparent 72%
+  );
+  mix-blend-mode: screen;
+  animation: board-ignite 1.2s 1.68s ease-out both;
+}
+
+.cphone-board__wet {
+  position: absolute;
+  inset: 54% 0 0 0;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(80% 100% at 52% 100%, rgba(158, 226, 255, 0.5), transparent 70%);
+  mix-blend-mode: screen;
+  animation: board-wet 3.6s 7.5s ease-out both;
+}
+
+.cphone-board__sheen {
+  position: absolute;
+  z-index: 6;
+  top: -22%;
+  bottom: -22%;
+  left: -64%;
+  width: 54%;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(
+    100deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.08) 38%,
+    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0.08) 62%,
+    transparent 100%
+  );
+  mix-blend-mode: screen;
+  transform: translateX(-140%) rotate(9deg);
+  animation: board-sheen 10s 2.1s cubic-bezier(0.42, 0, 0.2, 1) infinite;
+}
+
+.cphone-board__glass {
+  position: absolute;
+  inset: 0;
+  z-index: 7;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      118deg,
+      rgba(255, 255, 255, 0.17) 0%,
+      rgba(255, 255, 255, 0.03) 15%,
+      transparent 32%,
+      transparent 76%,
+      rgba(190, 230, 255, 0.06) 100%
+    ),
+    radial-gradient(120% 58% at 18% 0%, rgba(230, 248, 255, 0.14), transparent 56%);
+  mix-blend-mode: screen;
+  box-shadow: inset 0 0 32px rgba(0, 8, 18, 0.34);
+}
+
+.cphone-board__off {
+  position: absolute;
+  inset: 0;
+  z-index: 9;
+  pointer-events: none;
+  background: #010307;
+  animation: board-screen-off 2s 0.3s linear both;
+}
+
+.cphone-board__glint {
+  position: absolute;
+  z-index: 10;
+  top: -30%;
+  bottom: -30%;
+  left: -20%;
+  width: 38%;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.34) 46%,
+    rgba(219, 242, 255, 0.52) 52%,
+    transparent 100%
+  );
+  mix-blend-mode: screen;
+  transform: translateX(-180%) rotate(16deg);
+  animation: board-glint 1.9s 0.8s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+/* ---------------- 海浪 ---------------- */
+
+.cphone-board__wave {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.cphone-board__wave-glow {
+  position: absolute;
+  z-index: 4;
+  left: 24%;
+  right: -12%;
+  bottom: -16%;
+  height: 70%;
+  opacity: 0;
+  background: radial-gradient(58% 90% at 64% 100%, rgba(107, 209, 255, 0.42), transparent 72%);
+  filter: blur(34px);
+  mix-blend-mode: screen;
+  animation: board-wave-glow 4.2s 5.6s cubic-bezier(0.16, 0.78, 0.24, 1) both;
+}
+
+.cphone-board__wave-crash {
+  position: absolute;
+  z-index: 4;
+  left: -20%;
+  right: -20%;
+  bottom: -30%;
+  height: 96%;
+  display: block;
+  opacity: 0;
+  animation: board-wave-rise 4.2s 5.6s cubic-bezier(0.14, 0.78, 0.22, 1) both;
+}
+
+.cphone-board__wave-crash-img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  background: url("../assets/billboard/cphone-wave-crash.webp?v=3") 50% 34% / cover no-repeat;
+  filter: saturate(1.14) contrast(1.06) brightness(1.02);
+  -webkit-mask-image: linear-gradient(
+    180deg,
+    transparent 0%,
+    transparent 10%,
+    rgba(0, 0, 0, 0.18) 16%,
+    rgba(0, 0, 0, 0.55) 24%,
+    #000 36%,
+    #000 100%
+  );
+  mask-image: linear-gradient(
+    180deg,
+    transparent 0%,
+    transparent 10%,
+    rgba(0, 0, 0, 0.18) 16%,
+    rgba(0, 0, 0, 0.55) 24%,
+    #000 36%,
+    #000 100%
+  );
+  transform-origin: 50% 100%;
+  animation: board-wave-tide 12s 10.15s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+.cphone-board__impact {
+  position: absolute;
+  z-index: 5;
+  left: 56%;
+  top: 54%;
+  width: 42%;
+  height: 38%;
+  pointer-events: none;
+  border-radius: 50%;
+  opacity: 0;
+  background: radial-gradient(
+    closest-side,
+    rgba(226, 249, 255, 0.72) 0%,
+    rgba(126, 213, 255, 0.34) 46%,
+    transparent 74%
+  );
+  filter: blur(14px);
+  mix-blend-mode: screen;
+  animation: board-impact 1.4s 7.5s ease-out both;
+}
+
+/* ---------------- 光效 ---------------- */
+
+.cphone-board__flare {
+  position: absolute;
+  z-index: 5;
+  left: 6%;
+  right: 4%;
+  top: 34%;
+  height: 2px;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(190, 232, 255, 0.28) 30%,
+    rgba(255, 255, 255, 0.88) 52%,
+    rgba(170, 224, 255, 0.32) 72%,
+    transparent 100%
+  );
+  box-shadow:
+    0 0 14px rgba(169, 225, 255, 0.6),
+    0 0 40px rgba(94, 185, 255, 0.34);
+  filter: blur(0.4px);
+  animation: board-flare 1.7s 1.65s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.cphone-board__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(2, 7, 12, 0.82) 0%,
+      rgba(2, 7, 12, 0.56) 19%,
+      rgba(2, 7, 12, 0.2) 37%,
+      transparent 53%
+    ),
+    linear-gradient(0deg, rgba(2, 6, 11, 0.62) 0%, rgba(2, 6, 11, 0.2) 17%, transparent 36%);
+}
+
+/* ---------------- 文案 ---------------- */
+
+.cphone-board__copy {
+  position: absolute;
+  z-index: 7;
+  left: clamp(26px, 5%, 64px);
+  top: 50%;
+  max-width: 40%;
+  color: #f4f9ff;
+  transform: translateY(-50%);
+}
+
+.cphone-board__copy::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -52% -22% -52% -18%;
+  pointer-events: none;
+  background: radial-gradient(58% 56% at 38% 50%, rgba(2, 7, 13, 0.7), transparent 78%);
+  filter: blur(22px);
+}
+
+.cphone-board__rule {
+  display: block;
+  position: relative;
+  width: clamp(34px, 4vw, 46px);
+  height: 1px;
+  margin-bottom: clamp(16px, 2vw, 24px);
+  background: linear-gradient(
+    90deg,
+    rgba(226, 246, 255, 0.95) 0%,
+    rgba(119, 198, 255, 0.42) 72%,
+    transparent 100%
+  );
+  box-shadow: 0 0 14px rgba(150, 219, 255, 0.6);
+  transform-origin: left center;
+  animation: board-rule 0.9s 2.25s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.cphone-board__rule::after {
+  content: "";
+  position: absolute;
+  right: -2px;
+  top: 50%;
+  width: 3px;
+  height: 3px;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background: #e8f8ff;
+  box-shadow: 0 0 8px rgba(147, 221, 255, 0.9);
+}
+
+.cphone-board__title {
+  margin: 0;
+  font-size: clamp(38px, 4.2vw, 58px);
+  font-weight: 650;
+  line-height: 1.02;
+  letter-spacing: -0.038em;
+  white-space: nowrap;
+  text-shadow: 0 10px 44px rgba(28, 96, 148, 0.42);
+  animation: board-title 0.95s 2.4s cubic-bezier(0.18, 0.82, 0.24, 1) both;
+}
+
+.cphone-board__title em {
+  font-style: normal;
+  font-weight: 300;
+  letter-spacing: 0.01em;
+  background: linear-gradient(116deg, #ffffff 4%, #a9d9ff 52%, #eefaff 96%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.cphone-board__tagline {
+  margin: clamp(11px, 1.35vw, 16px) 0 0;
+  font-size: clamp(12px, 1.12vw, 15px);
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  color: rgba(219, 237, 253, 0.82);
+  white-space: nowrap;
+  text-shadow: 0 4px 20px rgba(2, 10, 18, 0.5);
+  animation: board-tagline 0.9s 2.65s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+/* ---------------- 收尾质感 ---------------- */
+
+.cphone-board__vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  pointer-events: none;
+  background:
+    radial-gradient(118% 92% at 52% 44%, transparent 52%, rgba(0, 4, 10, 0.5) 100%),
+    linear-gradient(
+      180deg,
+      rgba(0, 3, 8, 0.5) 0%,
+      transparent 11%,
+      transparent 88%,
+      rgba(0, 3, 8, 0.34) 100%
+    );
+}
+
+.cphone-board__grain {
+  position: absolute;
+  inset: 0;
+  z-index: 9;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: soft-light;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>");
+  background-size: 180px 180px;
+}
+
+/* ---------------- 动效 ---------------- */
+
+@keyframes board-enter {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.994);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes board-drift-a {
+  from {
+    transform: translate3d(-5%, 2%, 0) scale(0.96);
+  }
+  to {
+    transform: translate3d(5%, -3%, 0) scale(1.12);
+  }
+}
+
+@keyframes board-drift-b {
+  from {
+    transform: translate3d(3%, 1%, 0) scale(1.04);
+  }
+  to {
+    transform: translate3d(-4%, -4%, 0) scale(0.94);
+  }
+}
+
+@keyframes board-spill {
+  from {
+    transform: translate3d(-2%, 1.4%, 0) scale(1.02);
+  }
+  to {
+    transform: translate3d(2.2%, -1.6%, 0) scale(1.09);
+  }
+}
+
+@keyframes board-haze {
+  from {
+    transform: translate3d(-4%, 3%, 0) scale(0.94);
+    opacity: 0.5;
+  }
+  to {
+    transform: translate3d(5%, -3%, 0) scale(1.1);
+    opacity: 0.9;
+  }
+}
+
+@keyframes board-dust {
+  from {
+    transform: translate3d(-1.5%, 1%, 0);
+    opacity: 0.42;
+  }
+  to {
+    transform: translate3d(1.5%, -1.5%, 0);
+    opacity: 0.72;
+  }
+}
+
+@keyframes board-device-rise {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 26%, 0) scale(0.965);
+  }
+  55% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes board-float {
+  from {
+    transform: translate3d(0, 0.7%, 0);
+  }
+  to {
+    transform: translate3d(0, -0.7%, 0);
+  }
+}
+
+@keyframes board-aura {
+  0% {
+    opacity: 0;
+    transform: scale(0.72);
+  }
+  62% {
+    opacity: 0.62;
+    transform: scale(0.96);
+  }
+  82% {
+    opacity: 0.95;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 0.76;
+    transform: scale(1);
+  }
+}
+
+@keyframes board-wall-in {
+  from {
+    opacity: 0;
+    transform: scale(1.1);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes board-wall-drift {
+  from {
+    transform: scale(1.03) translate3d(-1.4%, 1.2%, 0);
+  }
+  to {
+    transform: scale(1.11) translate3d(1.8%, -1.6%, 0);
+  }
+}
+
+@keyframes board-screen-off {
+  0%,
+  64% {
+    opacity: 1;
+  }
+  68% {
+    opacity: 0.16;
+  }
+  72% {
+    opacity: 1;
+  }
+  76%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes board-ignite {
+  0% {
+    opacity: 0;
+    transform: scale(0.72);
+  }
+  32% {
+    opacity: 0.92;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.12);
+  }
+}
+
+@keyframes board-ai-in {
+  0% {
+    opacity: 0;
+    transform: scale(1.22);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes board-ai-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.024);
+  }
+}
+
+@keyframes board-ai-halo {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+@keyframes board-glint {
+  0% {
+    opacity: 0;
+    transform: translateX(-180%) rotate(16deg);
+  }
+  32% {
+    opacity: 0.85;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(520%) rotate(16deg);
+  }
+}
+
+@keyframes board-sheen {
+  0% {
+    opacity: 0;
+    transform: translateX(-140%) rotate(9deg);
+  }
+  8% {
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.62;
+  }
+  38% {
+    opacity: 0.62;
+  }
+  48% {
+    opacity: 0;
+    transform: translateX(300%) rotate(9deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(300%) rotate(9deg);
+  }
+}
+
+@keyframes board-rule {
+  from {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  to {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+@keyframes board-title {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+    -webkit-clip-path: inset(0 0 100% 0);
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    -webkit-clip-path: inset(-30% -10% -30% -10%);
+    clip-path: inset(-30% -10% -30% -10%);
+  }
+}
+
+@keyframes board-tagline {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes board-wave-rise {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 58%, 0) scale(1.05);
+  }
+  28% {
+    opacity: 0.9;
+  }
+  55% {
+    opacity: 1;
+    transform: translate3d(0, -3%, 0) scale(1.01);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 22%, 0) scale(1);
+  }
+}
+
+@keyframes board-wave-tide {
+  from {
+    transform: scale(1.02) translate3d(-1%, 1.2%, 0);
+  }
+  to {
+    transform: scale(1.06) translate3d(1.4%, -1.4%, 0);
+  }
+}
+
+@keyframes board-wave-glow {
+  0% {
+    opacity: 0;
+    transform: translateY(36%) scale(0.9);
+  }
+  42% {
+    opacity: 0.55;
+  }
+  100% {
+    opacity: 0.7;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes board-impact {
+  0% {
+    opacity: 0;
+    transform: scale(0.62);
+  }
+  26% {
+    opacity: 0.86;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.22);
+  }
+}
+
+@keyframes board-wet {
+  0% {
+    opacity: 0;
+    transform: translateY(10%);
+  }
+  22% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+}
+
+@keyframes board-flare {
+  0% {
+    opacity: 0;
+    transform: scaleX(0.2);
+    transform-origin: 52% 50%;
+  }
+  28% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0.16;
+    transform: scaleX(1);
+    transform-origin: 52% 50%;
+  }
+}
+
+/* ---------------- 响应式 ---------------- */
+
+@media (max-width: 1024px) {
+  .cphone-board__stage {
+    height: clamp(330px, 34vw, 392px);
+  }
+
+  .cphone-board__device {
+    left: 61%;
+    height: 112%;
+  }
+
+  .cphone-board__copy {
+    max-width: 42%;
+  }
+
+  .cphone-board__title {
+    font-size: clamp(34px, 4.6vw, 46px);
+  }
+
+  .cphone-board__spill {
+    left: 10%;
+    width: 62%;
+  }
+
+  .cphone-board__haze {
+    left: 16%;
+    width: 62%;
+  }
+}
+
+@media (max-width: 720px) {
+  .cphone-board {
+    padding-top: 14px;
+    padding-inline: 14px;
+  }
+
+  .cphone-board__stage {
+    height: clamp(340px, 92vw, 402px);
+    border-radius: 22px;
+  }
+
+  .cphone-board__stage::after {
+    top: 58%;
+  }
+
+  .cphone-board__device {
+    top: 1.2%;
+    left: 28%;
+    height: 118%;
+  }
+
+  .cphone-board__body {
+    padding: 4px;
+    transform: rotate(-1deg);
+  }
+
+  .cphone-board__copy {
+    left: 20px;
+    right: 20px;
+    top: auto;
+    bottom: 18px;
+    max-width: none;
+    transform: none;
+  }
+
+  .cphone-board__copy::before {
+    inset: -44% -10% -60% -10%;
+  }
+
+  .cphone-board__rule {
+    width: 28px;
+    margin-bottom: 12px;
+  }
+
+  .cphone-board__title {
+    font-size: clamp(28px, 8vw, 34px);
+  }
+
+  .cphone-board__tagline {
+    margin-top: 9px;
+    font-size: 11.5px;
+    letter-spacing: 0.11em;
+  }
+
+  .cphone-board__spill {
+    left: -24%;
+    top: -16%;
+    width: 92%;
+    height: 124%;
+    opacity: 0.4;
+    filter: blur(40px) saturate(1.4) brightness(0.58);
+  }
+
+  .cphone-board__blob--1 {
+    left: 24%;
+    top: -14%;
+    width: 74%;
+    height: 96%;
+  }
+
+  .cphone-board__blob--2 {
+    left: -22%;
+    bottom: -26%;
+    width: 78%;
+    height: 62%;
+  }
+
+  .cphone-board__haze {
+    left: 4%;
+    top: 44%;
+    width: 76%;
+  }
+
+  .cphone-board__aura {
+    inset: -12% -40% -8% -44%;
+    filter: blur(34px);
+  }
+
+  .cphone-board__ai {
+    inset: 0 0 24% 0;
+  }
+
+  .cphone-board__ai-text {
+    font-size: clamp(82px, 28vw, 122px);
+    font-size: 64cqw;
+  }
+
+  .cphone-board__flare {
+    left: 2%;
+    right: 2%;
+    top: 30%;
+  }
+
+  .cphone-board__impact {
+    left: 40%;
+    top: 50%;
+    width: 54%;
+    height: 34%;
+  }
+
+  .cphone-board__wave-crash {
+    left: -28%;
+    right: -28%;
+    bottom: -26%;
+    height: 90%;
+  }
+
+  .cphone-board__wave-crash-img {
+    background-position: 48% 38%;
+  }
+
+  .cphone-board__scrim {
+    background:
+      linear-gradient(0deg, rgba(2, 6, 11, 0.9) 0%, rgba(2, 6, 11, 0.55) 18%, transparent 42%),
+      linear-gradient(90deg, rgba(2, 6, 11, 0.38) 0%, transparent 60%);
+  }
+
+  .cphone-board__tagline {
+    color: rgba(228, 243, 255, 0.9);
+  }
+
+  .cphone-board__glint {
+    width: 46%;
+  }
+}
+
+@media (max-width: 380px) {
+  .cphone-board__stage {
+    height: 342px;
+  }
+
+  .cphone-board__device {
+    left: 26%;
+    height: 116%;
+  }
+
+  .cphone-board__title {
+    font-size: 27px;
+  }
+
+  .cphone-board__tagline {
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+  }
+}
+
+/* ============================================================
+   系统开启「减弱动态效果」时，站点的全局规则会把动画压到 0.001ms
+   且只播放一次。广告牌本身就是一段短片，这里显式恢复叙事动画的
+   时长与循环次数，同时把氛围类动画放慢，避免变成静止贴图。
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .cphone-board__stage {
+    animation-duration: 1.2s !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  .cphone-board__blob--1 {
+    animation-duration: 40s !important;
+    animation-iteration-count: infinite !important;
+  }
+
+  .cphone-board__blob--2 {
+    animation-duration: 46s !important;
+    animation-iteration-count: infinite !important;
+  }
+
+  .cphone-board__spill {
+    animation-duration: 38s !important;
+    animation-iteration-count: infinite !important;
+  }
+
+  .cphone-board__haze {
+    animation-duration: 36s !important;
+    animation-iteration-count: infinite !important;
+  }
+
+  .cphone-board__dust {
+    animation-duration: 44s !important;
+    animation-iteration-count: infinite !important;
+  }
+
+  .cphone-board__device {
+    animation-duration: 1.5s !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  .cphone-board__float {
+    animation-duration: 13s !important;
+    animation-iteration-count: infinite !important;
+  }
+
+  .cphone-board__aura {
+    animation-duration: 2.4s !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  .cphone-board__wall {
+    animation-duration: 1.8s !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  .cphone-board__wall-img {
+    animation-duration: 44s !important;
+    animation-iteration-count: infinite !important;
+  }
+
+  .cphone-board__off {
+    animation-duration: 2s !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  .cphone-board__ignite {
+    animation-duration: 1.2s !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  .cphone-board__ai {
+    animation-duration: 1.4s !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  .cphone-board__ai-text {
+    animation-duration: 10s !important;
+    animation-iteration-count: infinite !important;
+  }
+
+  .cphone-board__ai-text::before {
+    animation-duration: 10s !important;
+    animation-iteration-count: infinite !important;
+  }
+
+  .cphone-board__glint {
+    animation-duration: 1.9s !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  .cphone-board__sheen {
+    animation-duration: 15s !important;
+    animation-iteration-count: infinite !important;
+  }
+
+  .cphone-board__rule {
+    animation-duration: 0.9s !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  .cphone-board__title {
+    animation-duration: 0.95s !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  .cphone-board__tagline {
+    animation-duration: 0.9s !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  .cphone-board__wave-crash {
+    animation-duration: 4.2s !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  .cphone-board__wave-crash-img {
+    animation-duration: 16s !important;
+    animation-iteration-count: infinite !important;
+  }
+
+  .cphone-board__wave-glow {
+    animation-duration: 4.2s !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  .cphone-board__impact {
+    animation-duration: 1.4s !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  .cphone-board__wet {
+    animation-duration: 3.6s !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  .cphone-board__flare {
+    animation-duration: 1.7s !important;
+    animation-iteration-count: 1 !important;
+  }
+}

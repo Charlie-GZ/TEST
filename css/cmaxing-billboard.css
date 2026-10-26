@@ -1,0 +1,1060 @@
+/* ============================================================
+   CMaxing 静界广告牌 · 噪声收敛
+   ------------------------------------------------------------
+   仅出现在配件分类页（html.is-accessories）。
+   耳罩发出同心声波，周围噪点被吸向耳罩后熄灭。
+   ============================================================ */
+
+.cmx-board {
+  display: none;
+}
+
+html.is-accessories .cmx-board {
+  display: block;
+}
+
+html.is-accessories .page-head {
+  display: none;
+}
+
+.cmx-board {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: clamp(16px, 2.2vw, 26px) clamp(16px, 3vw, 28px) 0;
+}
+
+/* ---------------- 舞台 ---------------- */
+
+.cmx-board__stage {
+  position: relative;
+  height: clamp(360px, 30vw, 436px);
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: clamp(20px, 2vw, 28px);
+  background:
+    radial-gradient(54% 90% at 76% 48%, rgba(58, 104, 168, 0.22), transparent 68%),
+    radial-gradient(40% 64% at 8% 96%, rgba(28, 50, 86, 0.25), transparent 72%),
+    linear-gradient(180deg, #04070d 0%, #07101d 48%, #03060b 100%);
+  box-shadow:
+    0 46px 96px -68px rgba(0, 0, 0, 0.98),
+    inset 0 1px 0 rgba(198, 224, 255, 0.1);
+  border: 1px solid rgba(154, 194, 240, 0.14);
+  animation: cmx-enter 1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.cmx-board__stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    radial-gradient(48% 62% at 78% 36%, rgba(140, 192, 255, 0.07), transparent 72%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 12%);
+}
+
+.cmx-board__stage::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  left: 4%;
+  right: 4%;
+  top: 10%;
+  height: 1px;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(190, 220, 255, 0.08) 22%,
+    rgba(214, 236, 255, 0.28) 54%,
+    transparent 88%
+  );
+  opacity: 0.6;
+}
+
+/* ---------------- 背景 ---------------- */
+
+.cmx-board__bg {
+  position: absolute;
+  inset: -8%;
+  z-index: 0;
+  pointer-events: none;
+  background: url("../assets/billboard/cmaxing-quiet-bg.jpg") 62% 50% / cover no-repeat;
+  opacity: 0.92;
+  filter: saturate(1.04) brightness(0.92) contrast(1.05);
+  transform: scale(1.04);
+  animation: cmx-bg 20s ease-in-out infinite alternate;
+}
+
+.cmx-board__glow {
+  position: absolute;
+  z-index: 1;
+  right: -6%;
+  top: -22%;
+  width: 72%;
+  height: 144%;
+  pointer-events: none;
+  background: radial-gradient(
+    closest-side,
+    rgba(98, 156, 232, 0.3),
+    rgba(44, 82, 138, 0.15) 52%,
+    transparent 74%
+  );
+  filter: blur(42px);
+  animation: cmx-glow 9s ease-in-out infinite alternate;
+}
+
+.cmx-board__haze {
+  position: absolute;
+  z-index: 1;
+  inset: -10%;
+  pointer-events: none;
+  background:
+    radial-gradient(30% 46% at 68% 38%, rgba(128, 180, 244, 0.11), transparent 72%),
+    radial-gradient(38% 44% at 44% 78%, rgba(58, 104, 168, 0.15), transparent 74%),
+    radial-gradient(24% 34% at 90% 66%, rgba(168, 212, 255, 0.08), transparent 76%);
+  filter: blur(34px);
+  animation: cmx-haze 12s ease-in-out infinite alternate;
+}
+
+.cmx-board__noise {
+  position: absolute;
+  z-index: 2;
+  inset: -3%;
+  pointer-events: none;
+  opacity: 0.55;
+  background: url("../assets/billboard/cmaxing-noise-dots.png") 50% 50% / cover no-repeat;
+  -webkit-mask: radial-gradient(88% 108% at 76% 48%, #000 22%, rgba(0, 0, 0, 0.55) 58%, transparent 82%);
+  mask: radial-gradient(88% 108% at 76% 48%, #000 22%, rgba(0, 0, 0, 0.55) 58%, transparent 82%);
+  animation: cmx-noise 16s ease-in-out infinite alternate;
+}
+
+.cmx-board__sweep {
+  position: absolute;
+  z-index: 3;
+  top: -30%;
+  bottom: -30%;
+  left: -30%;
+  width: 24%;
+  pointer-events: none;
+  background: linear-gradient(
+    102deg,
+    transparent 0%,
+    rgba(186, 220, 255, 0.05) 28%,
+    rgba(226, 242, 255, 0.2) 48%,
+    rgba(148, 192, 255, 0.09) 66%,
+    transparent 100%
+  );
+  filter: blur(16px);
+  transform: translateX(-180%) rotate(8deg);
+  animation: cmx-sweep 12s 3s cubic-bezier(0.35, 0.08, 0.45, 0.92) infinite;
+}
+
+/* 静音波前：每轮噪点收敛后，一道柔光环扫过整个舞台 */
+.cmx-board__wave {
+  position: absolute;
+  z-index: 3;
+  left: 74%;
+  top: 58%;
+  width: 36%;
+  aspect-ratio: 1.45;
+  translate: -50% -50%;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  mix-blend-mode: screen;
+  background: radial-gradient(
+    closest-side,
+    transparent 62%,
+    rgba(152, 202, 255, 0.12) 69%,
+    rgba(210, 233, 255, 0.26) 72%,
+    transparent 79%
+  );
+  filter: blur(3px);
+  animation: cmx-wavefront 8.4s 0.8s ease-out infinite;
+}
+
+.cmx-board__wave::before {
+  content: "";
+  position: absolute;
+  inset: -8%;
+  border-radius: inherit;
+  background: radial-gradient(
+    closest-side,
+    transparent 65%,
+    rgba(160, 206, 255, 0.1) 71%,
+    rgba(206, 230, 255, 0.2) 74%,
+    transparent 80%
+  );
+  opacity: 0;
+  animation: cmx-wavefront 8.4s 4.4s ease-out infinite;
+}
+
+/* ---------------- 耳机 ---------------- */
+
+.cmx-board__device {
+  position: absolute;
+  z-index: 4;
+  top: 50%;
+  right: 6%;
+  height: 96%;
+  width: auto;
+  aspect-ratio: 830 / 1056;
+  translate: 0 -50%;
+  pointer-events: none;
+  animation: cmx-device-rise 1.6s 0.25s cubic-bezier(0.14, 0.82, 0.24, 1) both;
+}
+
+.cmx-board__quiet {
+  position: absolute;
+  z-index: 0;
+  inset: -18% -14%;
+  border-radius: 50%;
+  background: radial-gradient(
+    closest-side at 55% 54%,
+    rgba(136, 190, 252, 0.27),
+    rgba(44, 86, 144, 0.13) 54%,
+    transparent 74%
+  );
+  filter: blur(32px);
+  animation: cmx-quiet 8s ease-in-out infinite alternate;
+}
+
+.cmx-board__hush {
+  position: absolute;
+  z-index: 0;
+  left: 54%;
+  top: 57%;
+  width: 124%;
+  aspect-ratio: 1.42;
+  translate: -50% -50%;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(
+    closest-side,
+    rgba(150, 202, 255, 0.3),
+    rgba(84, 138, 204, 0.12) 52%,
+    transparent 74%
+  );
+  filter: blur(26px);
+  animation: cmx-hush 5.4s 0.7s ease-in-out infinite;
+}
+
+.cmx-board__intake {
+  position: absolute;
+  z-index: 0;
+  width: 72%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  mix-blend-mode: screen;
+  background: url("../assets/billboard/cmaxing-intake-streaks.png") 50% 50% / 100% 100% no-repeat;
+  -webkit-mask: radial-gradient(closest-side, transparent 10%, #000 32%, rgba(0, 0, 0, 0.5) 58%, transparent 80%);
+  mask: radial-gradient(closest-side, transparent 10%, #000 32%, rgba(0, 0, 0, 0.5) 58%, transparent 80%);
+  animation: cmx-intake 8.4s 0.8s ease-in-out infinite;
+}
+
+.cmx-board__intake--l {
+  left: 30%;
+  top: 68%;
+}
+
+.cmx-board__intake--r {
+  left: 79%;
+  top: 70%;
+  animation-delay: 4.6s;
+}
+
+.cmx-board__float {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  animation: cmx-float 7s 2s ease-in-out infinite alternate;
+}
+
+.cmx-board__shot {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.cmx-board__img {
+  position: relative;
+  z-index: 2;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter:
+    saturate(1.04) contrast(1.03)
+    drop-shadow(0 40px 40px rgba(0, 0, 0, 0.52))
+    drop-shadow(0 0 30px rgba(106, 166, 238, 0.16));
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.cmx-board__pulse {
+  position: absolute;
+  z-index: 1;
+  width: 40%;
+  aspect-ratio: 1.1;
+  translate: -50% -50%;
+  border-radius: 50%;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  border: 1.5px solid rgba(190, 224, 255, 0.75);
+  box-shadow:
+    0 0 22px rgba(132, 192, 255, 0.5),
+    inset 0 0 20px rgba(132, 192, 255, 0.3);
+  filter: drop-shadow(0 0 6px rgba(150, 205, 255, 0.55));
+  opacity: 0;
+  animation: cmx-pulse 5.4s 0.7s cubic-bezier(0.16, 0.6, 0.3, 1) infinite;
+}
+
+.cmx-board__pulse::before,
+.cmx-board__pulse::after {
+  content: "";
+  position: absolute;
+  inset: -1.5px;
+  border-radius: inherit;
+  border: 1px solid rgba(168, 210, 255, 0.55);
+  box-shadow:
+    0 0 16px rgba(120, 184, 255, 0.35),
+    inset 0 0 16px rgba(110, 170, 240, 0.2);
+  opacity: 0;
+  animation: cmx-pulse 5.4s cubic-bezier(0.16, 0.6, 0.3, 1) infinite;
+}
+
+.cmx-board__pulse::before {
+  animation-delay: 2.2s;
+}
+
+.cmx-board__pulse::after {
+  animation-delay: 3.7s;
+}
+
+.cmx-board__pulse--l {
+  left: 30%;
+  top: 68%;
+}
+
+.cmx-board__pulse--r {
+  left: 79%;
+  top: 70%;
+  animation-delay: 2.6s;
+}
+
+.cmx-board__pulse--r::before {
+  animation-delay: 4.1s;
+}
+
+.cmx-board__pulse--r::after {
+  animation-delay: 5.6s;
+}
+
+.cmx-board__rim {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0.7;
+  mix-blend-mode: screen;
+  -webkit-mask: url("../assets/billboard/cmaxing-cutout.png") 50% 50% / 100% 100% no-repeat;
+  mask: url("../assets/billboard/cmaxing-cutout.png") 50% 50% / 100% 100% no-repeat;
+  mask-mode: alpha;
+  background:
+    linear-gradient(118deg, transparent 32%, rgba(198, 226, 255, 0.26) 47%, transparent 62%),
+    radial-gradient(70% 80% at 72% 28%, rgba(166, 206, 255, 0.2), transparent 70%);
+  animation: cmx-rim 7s ease-in-out infinite alternate;
+}
+
+.cmx-board__sheen {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  opacity: 0.65;
+  -webkit-mask: url("../assets/billboard/cmaxing-cutout.png") 50% 50% / 100% 100% no-repeat;
+  mask: url("../assets/billboard/cmaxing-cutout.png") 50% 50% / 100% 100% no-repeat;
+  mask-mode: alpha;
+}
+
+.cmx-board__sheen::before {
+  content: "";
+  position: absolute;
+  top: -25%;
+  bottom: -25%;
+  left: -60%;
+  width: 44%;
+  background: linear-gradient(
+    102deg,
+    transparent 0%,
+    rgba(196, 224, 255, 0.16) 36%,
+    rgba(240, 248, 255, 0.52) 50%,
+    rgba(172, 208, 255, 0.18) 62%,
+    transparent 100%
+  );
+  transform: translateX(-100%) rotate(10deg);
+  animation: cmx-sheen 9s 2.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.cmx-board__sheen::after {
+  content: "";
+  position: absolute;
+  top: -25%;
+  bottom: -25%;
+  left: -60%;
+  width: 32%;
+  background: linear-gradient(
+    102deg,
+    transparent 0%,
+    rgba(188, 220, 255, 0.1) 38%,
+    rgba(232, 244, 255, 0.4) 50%,
+    rgba(160, 200, 255, 0.12) 62%,
+    transparent 100%
+  );
+  transform: translateX(-100%) rotate(10deg);
+  animation: cmx-sheen-2 9s 6.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.cmx-board__floor {
+  position: absolute;
+  z-index: 0;
+  left: -5%;
+  right: -5%;
+  bottom: 0;
+  height: 13%;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(
+    closest-side,
+    rgba(84, 146, 224, 0.22),
+    rgba(28, 52, 88, 0.1) 52%,
+    transparent 76%
+  );
+  filter: blur(24px);
+  animation: cmx-floor 11s ease-in-out infinite alternate;
+}
+
+/* ---------------- 文案 ---------------- */
+
+.cmx-board__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(3, 6, 11, 0.94) 0%,
+      rgba(3, 6, 11, 0.78) 22%,
+      rgba(3, 6, 11, 0.32) 42%,
+      transparent 60%
+    ),
+    linear-gradient(0deg, rgba(3, 6, 11, 0.5) 0%, transparent 26%);
+}
+
+.cmx-board__copy {
+  position: absolute;
+  z-index: 7;
+  left: clamp(26px, 4.6%, 64px);
+  top: 50%;
+  max-width: 37%;
+  color: #f2f8ff;
+  transform: translateY(-50%);
+}
+
+.cmx-board__copy::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -56% -24% -56% -20%;
+  pointer-events: none;
+  background: radial-gradient(58% 56% at 38% 50%, rgba(2, 5, 10, 0.68), transparent 78%);
+  filter: blur(22px);
+}
+
+.cmx-board__rule {
+  display: block;
+  position: relative;
+  width: clamp(34px, 4vw, 46px);
+  height: 1px;
+  margin-bottom: clamp(16px, 2vw, 24px);
+  background: linear-gradient(
+    90deg,
+    rgba(230, 243, 255, 0.95) 0%,
+    rgba(132, 184, 246, 0.55) 72%,
+    transparent 100%
+  );
+  box-shadow: 0 0 14px rgba(144, 194, 255, 0.5);
+  transform-origin: left center;
+  animation: cmx-rule 0.9s 1.9s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.cmx-board__rule::after {
+  content: "";
+  position: absolute;
+  right: -2px;
+  top: 50%;
+  width: 3px;
+  height: 3px;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background: #f0f8ff;
+  box-shadow: 0 0 8px rgba(160, 208, 255, 0.9);
+}
+
+.cmx-board__title {
+  margin: 0;
+  font-size: clamp(34px, 3.9vw, 54px);
+  font-weight: 650;
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+  white-space: nowrap;
+  text-shadow: 0 10px 44px rgba(0, 0, 0, 0.5);
+  animation: cmx-title 0.95s 2.05s cubic-bezier(0.18, 0.82, 0.24, 1) both;
+}
+
+.cmx-board__title em {
+  font-style: normal;
+  font-weight: 300;
+  letter-spacing: 0.01em;
+  background: linear-gradient(116deg, #ffffff 4%, #a6d2ff 48%, #eef8ff 96%);
+  background-size: 180% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: cmx-title-shine 7s 3.2s ease-in-out infinite;
+}
+
+.cmx-board__tagline {
+  margin: clamp(11px, 1.35vw, 16px) 0 0;
+  font-size: clamp(12px, 1.12vw, 15px);
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  color: rgba(216, 233, 255, 0.78);
+  white-space: nowrap;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.55);
+  animation: cmx-tagline 0.9s 2.3s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+/* ---------------- 收尾质感 ---------------- */
+
+.cmx-board__vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  pointer-events: none;
+  background:
+    radial-gradient(118% 92% at 54% 44%, transparent 50%, rgba(2, 5, 10, 0.56) 100%),
+    linear-gradient(
+      180deg,
+      rgba(2, 5, 10, 0.44) 0%,
+      transparent 12%,
+      transparent 86%,
+      rgba(2, 5, 10, 0.38) 100%
+    );
+}
+
+.cmx-board__grain {
+  position: absolute;
+  inset: 0;
+  z-index: 9;
+  pointer-events: none;
+  opacity: 0.055;
+  mix-blend-mode: soft-light;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>");
+  background-size: 180px 180px;
+}
+
+/* ---------------- 动效 ---------------- */
+
+@keyframes cmx-enter {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.994);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes cmx-bg {
+  from {
+    transform: scale(1.04) translate3d(2%, 1.5%, 0) rotate(-0.25deg);
+  }
+  to {
+    transform: scale(1.13) translate3d(-2%, -1.5%, 0) rotate(0.35deg);
+  }
+}
+
+@keyframes cmx-glow {
+  from {
+    opacity: 0.55;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    opacity: 0.95;
+    transform: translate3d(-3%, 2%, 0) scale(1.07);
+  }
+}
+
+@keyframes cmx-haze {
+  from {
+    opacity: 0.55;
+    transform: translate3d(-3%, 0, 0) scale(1.02);
+  }
+  to {
+    opacity: 0.85;
+    transform: translate3d(3%, -2%, 0) scale(1.07);
+  }
+}
+
+@keyframes cmx-noise {
+  from {
+    opacity: 0.3;
+    transform: translate3d(0, 4px, 0);
+  }
+  to {
+    opacity: 0.68;
+    transform: translate3d(-12px, -14px, 0);
+  }
+}
+
+@keyframes cmx-sweep {
+  0% {
+    transform: translateX(-180%) rotate(8deg);
+  }
+  80%,
+  100% {
+    transform: translateX(560%) rotate(8deg);
+  }
+}
+
+@keyframes cmx-wavefront {
+  0% {
+    opacity: 0;
+    transform: scale(0.55);
+  }
+  10% {
+    opacity: 0;
+  }
+  28% {
+    opacity: 0.7;
+  }
+  58% {
+    opacity: 0.2;
+  }
+  72%,
+  100% {
+    opacity: 0;
+    transform: scale(2.7);
+  }
+}
+
+@keyframes cmx-device-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(10%) scale(0.97);
+  }
+  26% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes cmx-quiet {
+  from {
+    opacity: 0.6;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+}
+
+@keyframes cmx-float {
+  from {
+    transform: translate3d(-4px, 7px, 0) rotate(-0.35deg);
+  }
+  to {
+    transform: translate3d(4px, -10px, 0) rotate(0.4deg);
+  }
+}
+
+@keyframes cmx-intake {
+  0% {
+    opacity: 0;
+    transform: scale(2.05) rotate(0deg);
+  }
+  16% {
+    opacity: 0.8;
+  }
+  58% {
+    opacity: 0.55;
+    transform: scale(0.95) rotate(-9deg);
+  }
+  74% {
+    opacity: 0;
+    transform: scale(0.45) rotate(-13deg);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.45) rotate(-13deg);
+  }
+}
+
+@keyframes cmx-hush {
+  0% {
+    opacity: 0;
+    transform: scale(0.72);
+  }
+  14% {
+    opacity: 0.7;
+  }
+  48% {
+    opacity: 0.16;
+    transform: scale(1.12);
+  }
+  66%,
+  100% {
+    opacity: 0;
+    transform: scale(1.24);
+  }
+}
+
+@keyframes cmx-pulse {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  12% {
+    opacity: 0.9;
+  }
+  52% {
+    opacity: 0.3;
+    transform: scale(1.65);
+  }
+  70%,
+  100% {
+    opacity: 0;
+    transform: scale(2.2);
+  }
+}
+
+@keyframes cmx-rim {
+  from {
+    opacity: 0.42;
+  }
+  to {
+    opacity: 0.78;
+  }
+}
+
+@keyframes cmx-sheen {
+  0% {
+    transform: translateX(-100%) rotate(10deg);
+  }
+  55%,
+  100% {
+    transform: translateX(340%) rotate(10deg);
+  }
+}
+
+@keyframes cmx-sheen-2 {
+  0% {
+    transform: translateX(-100%) rotate(10deg);
+  }
+  55%,
+  100% {
+    transform: translateX(410%) rotate(10deg);
+  }
+}
+
+@keyframes cmx-floor {
+  from {
+    opacity: 0.5;
+    transform: translateY(3px) scale(1);
+  }
+  to {
+    opacity: 0.9;
+    transform: translateY(-4px) scale(1.07);
+  }
+}
+
+@keyframes cmx-rule {
+  from {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  to {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+@keyframes cmx-title {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+}
+
+@keyframes cmx-title-shine {
+  0%,
+  20% {
+    background-position: 120% 50%;
+  }
+  62%,
+  100% {
+    background-position: -40% 50%;
+  }
+}
+
+@keyframes cmx-tagline {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------------- 自适应 ---------------- */
+
+@media (max-width: 1024px) {
+  .cmx-board__stage {
+    height: clamp(360px, 37vw, 424px);
+  }
+
+  .cmx-board__device {
+    right: 3%;
+  }
+
+  .cmx-board__copy {
+    left: 4.5%;
+    max-width: 40%;
+  }
+
+  .cmx-board__title {
+    font-size: clamp(30px, 4.1vw, 46px);
+  }
+}
+
+@media (max-width: 720px) {
+  .cmx-board {
+    padding: 14px 14px 0;
+  }
+
+  .cmx-board__stage {
+    height: clamp(480px, 132vw, 560px);
+  }
+
+  .cmx-board__stage::after {
+    top: 8%;
+  }
+
+  .cmx-board__bg {
+    background-position: 64% 46%;
+  }
+
+  .cmx-board__device {
+    top: 4%;
+    right: auto;
+    left: 50%;
+    width: 74%;
+    height: auto;
+    translate: -50% 0;
+  }
+
+  .cmx-board__copy {
+    left: 22px;
+    right: 22px;
+    top: auto;
+    bottom: 20px;
+    max-width: none;
+    transform: none;
+  }
+
+  .cmx-board__copy::before {
+    inset: -30% -14% -34% -16%;
+    background: radial-gradient(62% 70% at 34% 56%, rgba(2, 5, 10, 0.76), transparent 80%);
+  }
+
+  .cmx-board__rule {
+    width: 32px;
+    margin-bottom: 12px;
+  }
+
+  .cmx-board__title {
+    font-size: clamp(26px, 8vw, 34px);
+  }
+
+  .cmx-board__tagline {
+    margin-top: 9px;
+    font-size: 11.5px;
+    letter-spacing: 0.13em;
+  }
+
+  .cmx-board__scrim {
+    background:
+      linear-gradient(
+        0deg,
+        rgba(3, 6, 11, 0.9) 0%,
+        rgba(3, 6, 11, 0.56) 22%,
+        transparent 48%
+      ),
+      linear-gradient(90deg, rgba(3, 6, 11, 0.42) 0%, transparent 62%);
+  }
+
+  .cmx-board__floor {
+    bottom: 40px;
+    height: 10%;
+  }
+
+  .cmx-board__noise {
+    opacity: 0.32;
+  }
+}
+
+@media (max-width: 380px) {
+  .cmx-board__stage {
+    height: 480px;
+  }
+
+  .cmx-board__device {
+    width: 78%;
+  }
+
+  .cmx-board__title {
+    font-size: 26px;
+  }
+}
+
+/* ============================================================
+   系统开启「减少动态效果」时，站点全局规则会把动画压到 0.001ms。
+   这里恢复叙事动画并整体放慢，避免广告牌变成静止贴图。
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .cmx-board__stage {
+    animation-duration: 1s !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  .cmx-board__bg {
+    animation-duration: 28s !important;
+    animation-iteration-count: infinite !important;
+  }
+
+  .cmx-board__glow {
+    animation-duration: 14s !important;
+    animation-iteration-count: infinite !important;
+  }
+
+  .cmx-board__haze {
+    animation-duration: 16s !important;
+    animation-iteration-count: infinite !important;
+  }
+
+  .cmx-board__noise {
+    animation-duration: 24s !important;
+    animation-iteration-count: infinite !important;
+  }
+
+  .cmx-board__sweep {
+    animation-duration: 18s !important;
+    animation-iteration-count: infinite !important;
+  }
+
+  .cmx-board__wave,
+  .cmx-board__wave::before {
+    animation-duration: 14s !important;
+    animation-iteration-count: infinite !important;
+  }
+
+  .cmx-board__device {
+    animation-duration: 1.6s !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  .cmx-board__quiet {
+    animation-duration: 12s !important;
+    animation-iteration-count: infinite !important;
+  }
+
+  .cmx-board__hush {
+    animation-duration: 9s !important;
+    animation-iteration-count: infinite !important;
+  }
+
+  .cmx-board__intake {
+    animation-duration: 14s !important;
+    animation-iteration-count: infinite !important;
+  }
+
+  .cmx-board__float {
+    animation-duration: 10s !important;
+    animation-iteration-count: infinite !important;
+  }
+
+  .cmx-board__pulse,
+  .cmx-board__pulse::before,
+  .cmx-board__pulse::after {
+    animation-duration: 9s !important;
+    animation-iteration-count: infinite !important;
+  }
+
+  .cmx-board__rim {
+    animation-duration: 12s !important;
+    animation-iteration-count: infinite !important;
+  }
+
+  .cmx-board__sheen::before,
+  .cmx-board__sheen::after {
+    animation-duration: 13s !important;
+    animation-iteration-count: infinite !important;
+  }
+
+  .cmx-board__floor {
+    animation-duration: 16s !important;
+    animation-iteration-count: infinite !important;
+  }
+
+  .cmx-board__rule {
+    animation-duration: 0.9s !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  .cmx-board__title {
+    animation-duration: 0.95s !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  .cmx-board__title em {
+    animation-duration: 10s !important;
+    animation-iteration-count: infinite !important;
+  }
+
+  .cmx-board__tagline {
+    animation-duration: 0.9s !important;
+    animation-iteration-count: 1 !important;
+  }
+}

@@ -1,0 +1,1134 @@
+/* ============================================================
+   CBook Fold Light · 双屏合流广告牌
+   ------------------------------------------------------------
+   仅出现在笔记本分类页（html.is-cbook）。
+   两块屏的金色光流向铰链汇聚，合成一道光后散入暗场。
+   ============================================================ */
+
+.cbook-board {
+  display: none;
+}
+
+html.is-cbook .cbook-board {
+  display: block;
+}
+
+html.is-cbook .page-head {
+  display: none;
+}
+
+.cbook-board {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: clamp(16px, 2.2vw, 26px) clamp(16px, 3vw, 28px) 0;
+}
+
+/* ---------------- 舞台 ---------------- */
+
+.cbook-board__stage {
+  position: relative;
+  height: clamp(360px, 30vw, 436px);
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: clamp(20px, 2vw, 28px);
+  background:
+    radial-gradient(52% 86% at 72% 46%, rgba(157, 113, 54, 0.16), transparent 66%),
+    radial-gradient(42% 70% at 10% 96%, rgba(68, 56, 44, 0.2), transparent 70%),
+    linear-gradient(180deg, #0a0908 0%, #100e0b 48%, #050505 100%);
+  box-shadow:
+    0 46px 96px -68px rgba(0, 0, 0, 0.98),
+    inset 0 1px 0 rgba(255, 232, 190, 0.1);
+  border: 1px solid rgba(231, 196, 136, 0.13);
+  animation: cbook-enter 1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.cbook-board__stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    radial-gradient(50% 60% at 72% 35%, rgba(255, 226, 170, 0.08), transparent 72%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 12%);
+}
+
+.cbook-board__stage::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  left: 4%;
+  right: 4%;
+  top: 10%;
+  height: 1px;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 226, 180, 0.1) 22%,
+    rgba(255, 238, 208, 0.3) 54%,
+    transparent 88%
+  );
+  opacity: 0.6;
+}
+
+/* ---------------- 背景 ---------------- */
+
+.cbook-board__bg {
+  position: absolute;
+  inset: -8%;
+  z-index: 0;
+  pointer-events: none;
+  background: url("../assets/billboard/cbook-dual-flow-bg.jpg") 50% 48% / cover no-repeat;
+  opacity: 0.9;
+  filter: saturate(1.06) brightness(0.82) contrast(1.06);
+  transform: scale(1.04);
+  animation: cbook-bg 18s ease-in-out infinite alternate;
+}
+
+.cbook-board__glow {
+  position: absolute;
+  z-index: 1;
+  right: -4%;
+  top: -20%;
+  width: 70%;
+  height: 140%;
+  pointer-events: none;
+  background: radial-gradient(
+    closest-side,
+    rgba(224, 176, 96, 0.28),
+    rgba(120, 84, 36, 0.14) 52%,
+    transparent 74%
+  );
+  filter: blur(42px);
+  animation: cbook-glow 8s ease-in-out infinite alternate;
+}
+
+.cbook-board__haze {
+  position: absolute;
+  z-index: 1;
+  inset: -10%;
+  pointer-events: none;
+  background:
+    radial-gradient(30% 46% at 66% 38%, rgba(255, 206, 136, 0.1), transparent 72%),
+    radial-gradient(38% 44% at 42% 76%, rgba(178, 132, 68, 0.14), transparent 74%),
+    radial-gradient(24% 34% at 88% 64%, rgba(255, 226, 178, 0.08), transparent 76%);
+  filter: blur(34px);
+  animation: cbook-haze 10s ease-in-out infinite alternate;
+}
+
+.cbook-board__ring {
+  position: absolute;
+  z-index: 2;
+  left: 75%;
+  top: -9%;
+  height: 118%;
+  width: auto;
+  aspect-ratio: 1;
+  translate: -50% 0;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 1;
+  background:
+    conic-gradient(
+      from 205deg,
+      transparent 0 8%,
+      rgba(255, 240, 205, 0.8) 12%,
+      rgba(255, 255, 240, 1) 15%,
+      transparent 20% 42%,
+      rgba(255, 226, 170, 0.6) 46%,
+      transparent 52% 74%,
+      rgba(255, 246, 220, 0.65) 78%,
+      transparent 84% 100%
+    ),
+    conic-gradient(rgba(255, 226, 178, 0.09), rgba(255, 226, 178, 0.09));
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 1px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 1px));
+  filter: drop-shadow(0 0 8px rgba(255, 208, 132, 0.5));
+  animation: cbook-ring 22s linear infinite;
+}
+
+.cbook-board__ring--2 {
+  left: 74.5%;
+  top: -1%;
+  height: 104%;
+  opacity: 0.3;
+  background:
+    conic-gradient(
+      from 20deg,
+      transparent 0 30%,
+      rgba(255, 236, 200, 0.5) 34%,
+      transparent 40% 72%,
+      rgba(215, 196, 164, 0.3) 76%,
+      transparent 82% 100%
+    );
+  animation-duration: 34s;
+  animation-direction: reverse;
+}
+
+.cbook-board__dust {
+  position: absolute;
+  inset: -2%;
+  z-index: 5;
+  pointer-events: none;
+  opacity: 0.55;
+  background:
+    radial-gradient(circle at 16% 28%, rgba(255, 236, 205, 0.55) 0 1px, transparent 1.6px),
+    radial-gradient(circle at 34% 62%, rgba(255, 214, 158, 0.4) 0 1px, transparent 1.7px),
+    radial-gradient(circle at 55% 18%, rgba(255, 242, 220, 0.45) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 72% 82%, rgba(255, 210, 150, 0.42) 0 1px, transparent 1.7px),
+    radial-gradient(circle at 88% 36%, rgba(255, 246, 226, 0.5) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 63% 47%, rgba(255, 224, 176, 0.34) 0 1px, transparent 1.6px);
+  animation: cbook-dust 18s ease-in-out infinite alternate;
+}
+
+.cbook-board__sweep {
+  position: absolute;
+  z-index: 3;
+  top: -30%;
+  bottom: -30%;
+  left: -30%;
+  width: 24%;
+  pointer-events: none;
+  background: linear-gradient(
+    102deg,
+    transparent 0%,
+    rgba(255, 238, 210, 0.05) 28%,
+    rgba(255, 248, 236, 0.18) 48%,
+    rgba(255, 230, 190, 0.08) 66%,
+    transparent 100%
+  );
+  filter: blur(16px);
+  transform: translateX(-180%) rotate(8deg);
+  animation: cbook-sweep 10s 3s cubic-bezier(0.35, 0.08, 0.45, 0.92) infinite;
+}
+
+/* ---------------- 折叠电脑 ---------------- */
+
+.cbook-board__device {
+  position: absolute;
+  z-index: 4;
+  top: 50%;
+  right: 3.2%;
+  height: 92%;
+  width: auto;
+  aspect-ratio: 518 / 365;
+  translate: 0 -50%;
+  pointer-events: none;
+  animation: cbook-device-rise 1.6s 0.3s cubic-bezier(0.14, 0.82, 0.24, 1) both;
+}
+
+.cbook-board__aura {
+  position: absolute;
+  z-index: 0;
+  inset: -16% -12% -14% -14%;
+  border-radius: 46%;
+  background: radial-gradient(
+    closest-side at 50% 45%,
+    rgba(255, 196, 112, 0.22),
+    rgba(140, 96, 38, 0.12) 55%,
+    transparent 74%
+  );
+  filter: blur(36px);
+  animation: cbook-aura 2.2s 0.4s ease both;
+}
+
+/* 从两侧流向铰链的光束（位于机身之后，只露出机身外的部分） */
+.cbook-board__beam {
+  position: absolute;
+  z-index: 0;
+  height: 2px;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.cbook-board__beam--l {
+  right: 50%;
+  top: 62.3%;
+  width: 140%;
+  transform-origin: right center;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 214, 150, 0.04) 20%,
+    rgba(255, 228, 176, 0.55) 86%,
+    rgba(255, 248, 224, 0.9) 98%,
+    transparent 100%
+  );
+  filter: blur(2px);
+  animation: cbook-beam-l 7.5s 1.2s ease-in-out infinite;
+}
+
+.cbook-board__beam--r {
+  left: 50%;
+  top: 62.3%;
+  width: 84%;
+  transform-origin: left center;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 248, 224, 0.9) 0%,
+    rgba(255, 228, 176, 0.55) 14%,
+    rgba(255, 214, 150, 0.04) 80%,
+    transparent 100%
+  );
+  filter: blur(2px);
+  animation: cbook-beam-r 7.5s 1.2s ease-in-out infinite;
+}
+
+.cbook-board__float {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  animation: cbook-float 7.5s 2.1s ease-in-out infinite alternate;
+}
+
+.cbook-board__shot {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.cbook-board__img {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter:
+    saturate(1.03) contrast(1.03)
+    drop-shadow(0 36px 44px rgba(0, 0, 0, 0.58))
+    drop-shadow(0 6px 14px rgba(0, 0, 0, 0.45));
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.cbook-board__floor {
+  position: absolute;
+  z-index: 0;
+  left: -6%;
+  right: -6%;
+  bottom: -3%;
+  height: 22%;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(
+    closest-side,
+    rgba(255, 200, 120, 0.24),
+    rgba(120, 84, 36, 0.12) 52%,
+    transparent 76%
+  );
+  filter: blur(26px);
+  animation: cbook-floor 10s ease-in-out infinite alternate;
+}
+
+/* 屏幕光流：上屏向下、下屏向上，在铰链处汇合 */
+.cbook-board__flow {
+  position: absolute;
+  z-index: 3;
+  pointer-events: none;
+  border-radius: 50%;
+  opacity: 0;
+  mix-blend-mode: screen;
+  filter: blur(15px);
+}
+
+.cbook-board__flow::before {
+  content: "";
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  top: 46%;
+  height: 10px;
+  border-radius: 50%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 238, 200, 0.5) 28%,
+    rgba(255, 252, 238, 0.95) 50%,
+    rgba(255, 226, 170, 0.55) 72%,
+    transparent 100%
+  );
+  filter: blur(4px);
+}
+
+.cbook-board__flow--top {
+  left: 18%;
+  top: 2%;
+  width: 64%;
+  height: 36%;
+  background: radial-gradient(
+    50% 60% at 50% 50%,
+    rgba(255, 248, 225, 0.7),
+    rgba(255, 214, 150, 0.4) 42%,
+    transparent 76%
+  );
+  animation: cbook-flow-top 7.5s 1.2s ease-in-out infinite;
+}
+
+.cbook-board__flow--base {
+  left: 12%;
+  top: 55%;
+  width: 76%;
+  height: 30%;
+  background: radial-gradient(
+    50% 60% at 50% 50%,
+    rgba(255, 244, 214, 0.6),
+    rgba(255, 204, 132, 0.34) 44%,
+    transparent 78%
+  );
+  animation: cbook-flow-base 7.5s 1.2s ease-in-out infinite;
+}
+
+.cbook-board__seam {
+  position: absolute;
+  z-index: 4;
+  left: 9%;
+  top: 61.8%;
+  width: 82%;
+  height: 12px;
+  translate: 0 -50%;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0.2;
+  mix-blend-mode: screen;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 212, 142, 0.15) 16%,
+    rgba(255, 238, 200, 0.75) 48%,
+    rgba(255, 255, 240, 0.9) 52%,
+    rgba(255, 212, 142, 0.15) 84%,
+    transparent 100%
+  );
+  filter: blur(5px);
+  animation: cbook-seam 7.5s 1.2s ease-in-out infinite;
+}
+
+.cbook-board__flare {
+  position: absolute;
+  z-index: 5;
+  left: 52%;
+  top: 61.8%;
+  width: 34%;
+  height: 22%;
+  translate: -50% -50%;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  mix-blend-mode: screen;
+  background: radial-gradient(
+    closest-side,
+    rgba(255, 255, 242, 0.9),
+    rgba(255, 214, 150, 0.5) 34%,
+    transparent 72%
+  );
+  filter: blur(13px);
+  animation: cbook-flare 7.5s 1.2s ease-out infinite;
+}
+
+.cbook-board__sheen {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  opacity: 0.72;
+  -webkit-mask: url("../assets/billboard/cbook-fold-cutout.png") 50% 50% / 100% 100% no-repeat;
+  mask: url("../assets/billboard/cbook-fold-cutout.png") 50% 50% / 100% 100% no-repeat;
+  mask-mode: alpha;
+}
+
+.cbook-board__sheen::before {
+  content: "";
+  position: absolute;
+  top: -25%;
+  bottom: -25%;
+  left: -60%;
+  width: 46%;
+  background: linear-gradient(
+    102deg,
+    transparent 0%,
+    rgba(255, 238, 205, 0.18) 36%,
+    rgba(255, 250, 240, 0.55) 50%,
+    rgba(255, 222, 170, 0.2) 62%,
+    transparent 100%
+  );
+  transform: translateX(-100%) rotate(10deg);
+  animation: cbook-sheen 8.5s 2.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.cbook-board__sheen::after {
+  content: "";
+  position: absolute;
+  top: -25%;
+  bottom: -25%;
+  left: -60%;
+  width: 34%;
+  background: linear-gradient(
+    102deg,
+    transparent 0%,
+    rgba(255, 236, 198, 0.12) 38%,
+    rgba(255, 248, 230, 0.42) 50%,
+    rgba(255, 218, 164, 0.14) 62%,
+    transparent 100%
+  );
+  transform: translateX(-100%) rotate(10deg);
+  animation: cbook-sheen-2 8.5s 6.3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* ---------------- 文案 ---------------- */
+
+.cbook-board__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(6, 5, 4, 0.94) 0%,
+      rgba(6, 5, 4, 0.78) 22%,
+      rgba(6, 5, 4, 0.34) 42%,
+      transparent 60%
+    ),
+    linear-gradient(0deg, rgba(6, 5, 4, 0.5) 0%, transparent 26%);
+}
+
+.cbook-board__copy {
+  position: absolute;
+  z-index: 7;
+  left: clamp(26px, 4.6%, 64px);
+  top: 50%;
+  max-width: 39%;
+  color: #fffaf2;
+  transform: translateY(-50%);
+}
+
+.cbook-board__copy::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -56% -24% -56% -20%;
+  pointer-events: none;
+  background: radial-gradient(58% 56% at 38% 50%, rgba(4, 3, 2, 0.68), transparent 78%);
+  filter: blur(22px);
+}
+
+.cbook-board__rule {
+  display: block;
+  position: relative;
+  width: clamp(34px, 4vw, 46px);
+  height: 1px;
+  margin-bottom: clamp(16px, 2vw, 24px);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 244, 220, 0.95) 0%,
+    rgba(224, 176, 100, 0.55) 72%,
+    transparent 100%
+  );
+  box-shadow: 0 0 14px rgba(255, 214, 150, 0.5);
+  transform-origin: left center;
+  animation: cbook-rule 0.9s 2.1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.cbook-board__rule::after {
+  content: "";
+  position: absolute;
+  right: -2px;
+  top: 50%;
+  width: 3px;
+  height: 3px;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background: #fff8ea;
+  box-shadow: 0 0 8px rgba(255, 224, 170, 0.9);
+}
+
+.cbook-board__title {
+  margin: 0;
+  font-size: clamp(34px, 3.9vw, 54px);
+  font-weight: 650;
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+  white-space: nowrap;
+  text-shadow: 0 10px 44px rgba(0, 0, 0, 0.5);
+  animation: cbook-title 0.95s 2.25s cubic-bezier(0.18, 0.82, 0.24, 1) both;
+}
+
+.cbook-board__title em {
+  font-style: normal;
+  font-weight: 300;
+  letter-spacing: -0.01em;
+  background: linear-gradient(116deg, #ffffff 4%, #f0c98c 48%, #fff3dc 96%);
+  background-size: 180% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: cbook-title-shine 6.5s 3.4s ease-in-out infinite;
+}
+
+.cbook-board__tagline {
+  margin: clamp(11px, 1.35vw, 16px) 0 0;
+  font-size: clamp(12px, 1.12vw, 15px);
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  color: rgba(255, 243, 222, 0.78);
+  white-space: nowrap;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.55);
+  animation: cbook-tagline 0.9s 2.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+/* ---------------- 收尾质感 ---------------- */
+
+.cbook-board__vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  pointer-events: none;
+  background:
+    radial-gradient(118% 92% at 54% 44%, transparent 50%, rgba(4, 3, 2, 0.56) 100%),
+    linear-gradient(
+      180deg,
+      rgba(4, 3, 2, 0.44) 0%,
+      transparent 12%,
+      transparent 86%,
+      rgba(4, 3, 2, 0.38) 100%
+    );
+}
+
+.cbook-board__grain {
+  position: absolute;
+  inset: 0;
+  z-index: 9;
+  pointer-events: none;
+  opacity: 0.055;
+  mix-blend-mode: soft-light;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>");
+  background-size: 180px 180px;
+}
+
+/* ---------------- 动效 ---------------- */
+
+@keyframes cbook-enter {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.994);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes cbook-bg {
+  from {
+    transform: scale(1.04) translate3d(2%, 1.5%, 0) rotate(-0.3deg);
+  }
+  to {
+    transform: scale(1.14) translate3d(-2.5%, -1.5%, 0) rotate(0.4deg);
+  }
+}
+
+@keyframes cbook-glow {
+  from {
+    opacity: 0.55;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    opacity: 0.95;
+    transform: translate3d(-3%, 2%, 0) scale(1.08);
+  }
+}
+
+@keyframes cbook-haze {
+  from {
+    opacity: 0.55;
+    transform: translate3d(-3%, 0, 0) scale(1.02);
+  }
+  to {
+    opacity: 0.85;
+    transform: translate3d(3%, -2%, 0) scale(1.08);
+  }
+}
+
+@keyframes cbook-ring {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes cbook-dust {
+  from {
+    opacity: 0.25;
+    transform: translate3d(0, 6px, 0);
+  }
+  to {
+    opacity: 0.7;
+    transform: translate3d(-14px, -18px, 0);
+  }
+}
+
+@keyframes cbook-sweep {
+  0% {
+    transform: translateX(-180%) rotate(8deg);
+  }
+  80%,
+  100% {
+    transform: translateX(560%) rotate(8deg);
+  }
+}
+
+@keyframes cbook-device-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(12%) scale(0.97);
+  }
+  26% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes cbook-aura {
+  0% {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes cbook-float {
+  from {
+    transform: translate3d(-4px, 8px, 0) rotate(-0.4deg);
+  }
+  to {
+    transform: translate3d(4px, -11px, 0) rotate(0.45deg);
+  }
+}
+
+@keyframes cbook-beam-l {
+  0% {
+    opacity: 0;
+    transform: translateX(-14%) rotate(-8deg);
+  }
+  12% {
+    opacity: 0.8;
+  }
+  42% {
+    opacity: 0.8;
+    transform: translateX(0) rotate(-8deg);
+  }
+  55%,
+  100% {
+    opacity: 0;
+    transform: translateX(0) rotate(-8deg);
+  }
+}
+
+@keyframes cbook-beam-r {
+  0% {
+    opacity: 0;
+    transform: translateX(14%) rotate(7deg);
+  }
+  12% {
+    opacity: 0.8;
+  }
+  42% {
+    opacity: 0.8;
+    transform: translateX(0) rotate(7deg);
+  }
+  55%,
+  100% {
+    opacity: 0;
+    transform: translateX(0) rotate(7deg);
+  }
+}
+
+@keyframes cbook-flow-top {
+  0% {
+    opacity: 0;
+    transform: translateY(-12%) scale(0.9);
+  }
+  10% {
+    opacity: 0.85;
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateY(78%) scale(1.04);
+  }
+  62%,
+  100% {
+    opacity: 0;
+    transform: translateY(78%) scale(1.04);
+  }
+}
+
+@keyframes cbook-flow-base {
+  0% {
+    opacity: 0;
+    transform: translateY(45%) scale(0.92);
+  }
+  10% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 0.75;
+    transform: translateY(-45%) scale(1.03);
+  }
+  62%,
+  100% {
+    opacity: 0;
+    transform: translateY(-45%) scale(1.03);
+  }
+}
+
+@keyframes cbook-seam {
+  0%,
+  38% {
+    opacity: 0.12;
+    transform: scaleX(0.8);
+  }
+  52% {
+    opacity: 0.9;
+    transform: scaleX(1);
+  }
+  60%,
+  100% {
+    opacity: 0.16;
+    transform: scaleX(0.92);
+  }
+}
+
+@keyframes cbook-flare {
+  0%,
+  42% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  52% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  62%,
+  100% {
+    opacity: 0;
+    transform: scale(1.6);
+  }
+}
+
+@keyframes cbook-sheen {
+  0% {
+    transform: translateX(-100%) rotate(10deg);
+  }
+  55%,
+  100% {
+    transform: translateX(330%) rotate(10deg);
+  }
+}
+
+@keyframes cbook-sheen-2 {
+  0% {
+    transform: translateX(-100%) rotate(10deg);
+  }
+  55%,
+  100% {
+    transform: translateX(400%) rotate(10deg);
+  }
+}
+
+@keyframes cbook-floor {
+  from {
+    opacity: 0.5;
+    transform: translateY(3px) scale(1);
+  }
+  to {
+    opacity: 0.9;
+    transform: translateY(-4px) scale(1.08);
+  }
+}
+
+@keyframes cbook-rule {
+  from {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  to {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+@keyframes cbook-title {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+}
+
+@keyframes cbook-title-shine {
+  0%,
+  20% {
+    background-position: 120% 50%;
+  }
+  62%,
+  100% {
+    background-position: -40% 50%;
+  }
+}
+
+@keyframes cbook-tagline {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------------- 自适应 ---------------- */
+
+@media (max-width: 1024px) {
+  .cbook-board__stage {
+    height: clamp(360px, 37vw, 424px);
+  }
+
+  .cbook-board__device {
+    right: 3%;
+    width: 50%;
+    height: auto;
+  }
+
+  .cbook-board__copy {
+    left: 4.5%;
+    max-width: 40%;
+  }
+
+  .cbook-board__title {
+    font-size: clamp(30px, 4.1vw, 46px);
+  }
+
+  .cbook-board__ring {
+    left: 73%;
+  }
+
+  .cbook-board__ring--2 {
+    left: 73.5%;
+  }
+}
+
+@media (max-width: 720px) {
+  .cbook-board {
+    padding: 14px 14px 0;
+  }
+
+  .cbook-board__stage {
+    height: clamp(390px, 104vw, 440px);
+  }
+
+  .cbook-board__stage::after {
+    top: 8%;
+  }
+
+  .cbook-board__bg {
+    background-position: 58% 46%;
+  }
+
+  .cbook-board__device {
+    top: 5%;
+    right: auto;
+    left: 50%;
+    width: min(84%, 400px);
+    translate: -50% 0;
+  }
+
+  .cbook-board__ring {
+    display: none;
+  }
+
+  .cbook-board__copy {
+    left: 22px;
+    right: 22px;
+    top: auto;
+    bottom: 20px;
+    max-width: none;
+    transform: none;
+  }
+
+  .cbook-board__copy::before {
+    inset: -30% -14% -34% -16%;
+    background: radial-gradient(62% 70% at 34% 56%, rgba(4, 3, 2, 0.76), transparent 80%);
+  }
+
+  .cbook-board__rule {
+    width: 32px;
+    margin-bottom: 12px;
+  }
+
+  .cbook-board__title {
+    font-size: clamp(26px, 8vw, 34px);
+  }
+
+  .cbook-board__tagline {
+    margin-top: 9px;
+    font-size: 11.5px;
+    letter-spacing: 0.13em;
+  }
+
+  .cbook-board__scrim {
+    background:
+      linear-gradient(
+        0deg,
+        rgba(6, 5, 4, 0.9) 0%,
+        rgba(6, 5, 4, 0.56) 22%,
+        transparent 48%
+      ),
+      linear-gradient(90deg, rgba(6, 5, 4, 0.42) 0%, transparent 62%);
+  }
+
+  .cbook-board__floor {
+    bottom: 80px;
+    height: 16%;
+  }
+}
+
+@media (max-width: 380px) {
+  .cbook-board__stage {
+    height: 396px;
+  }
+
+  .cbook-board__device {
+    width: 88%;
+  }
+
+  .cbook-board__title {
+    font-size: 26px;
+  }
+}
+
+/* ============================================================
+   系统开启「减少动态效果」时，站点全局规则会把动画压到 0.001ms。
+   广告牌本身是一段演示短片：这里恢复叙事动画，并把氛围动画放慢，
+   避免变成静止贴图，同时比正常模式更克制。
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .cbook-board__stage {
+    animation-duration: 1s !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  .cbook-board__bg {
+    animation-duration: 24s !important;
+    animation-iteration-count: infinite !important;
+  }
+
+  .cbook-board__glow {
+    animation-duration: 11s !important;
+    animation-iteration-count: infinite !important;
+  }
+
+  .cbook-board__haze {
+    animation-duration: 12s !important;
+    animation-iteration-count: infinite !important;
+  }
+
+  .cbook-board__ring {
+    animation-duration: 40s !important;
+    animation-iteration-count: infinite !important;
+  }
+
+  .cbook-board__ring--2 {
+    animation-duration: 56s !important;
+  }
+
+  .cbook-board__dust {
+    animation-duration: 24s !important;
+    animation-iteration-count: infinite !important;
+  }
+
+  .cbook-board__sweep {
+    animation-duration: 15s !important;
+    animation-iteration-count: infinite !important;
+  }
+
+  .cbook-board__device {
+    animation-duration: 1.6s !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  .cbook-board__aura {
+    animation-duration: 2.4s !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  .cbook-board__float {
+    animation-duration: 9s !important;
+    animation-iteration-count: infinite !important;
+  }
+
+  .cbook-board__beam {
+    animation-duration: 12s !important;
+    animation-iteration-count: infinite !important;
+  }
+
+  .cbook-board__flow {
+    animation-duration: 12s !important;
+    animation-iteration-count: infinite !important;
+  }
+
+  .cbook-board__seam {
+    animation-duration: 12s !important;
+    animation-iteration-count: infinite !important;
+  }
+
+  .cbook-board__flare {
+    animation-duration: 12s !important;
+    animation-iteration-count: infinite !important;
+  }
+
+  .cbook-board__sheen::before,
+  .cbook-board__sheen::after {
+    animation-duration: 11s !important;
+    animation-iteration-count: infinite !important;
+  }
+
+  .cbook-board__floor {
+    animation-duration: 14s !important;
+    animation-iteration-count: infinite !important;
+  }
+
+  .cbook-board__rule {
+    animation-duration: 0.9s !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  .cbook-board__title {
+    animation-duration: 0.95s !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  .cbook-board__title em {
+    animation-duration: 9s !important;
+    animation-iteration-count: infinite !important;
+  }
+
+  .cbook-board__tagline {
+    animation-duration: 0.9s !important;
+    animation-iteration-count: 1 !important;
+  }
+}

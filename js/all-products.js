@@ -22,6 +22,9 @@
   var pageTitle = document.getElementById("pageTitle");
   var pageEyebrow = document.getElementById("pageEyebrow");
 
+  /* 无搜索词时的标题（会随分类 / 新品变化），搜索时临时替换 */
+  var baseTitle = pageTitle ? pageTitle.textContent : "";
+
   var searchForm = document.getElementById("searchForm");
   var searchInput = document.getElementById("searchInput");
   var searchClear = document.getElementById("searchClear");
@@ -83,6 +86,13 @@
     empty.hidden = items.length > 0;
 
     countEl.textContent = items.length;
+
+    /* 搜索时标题显示「“关键词”的搜索结果」，清空搜索后恢复原标题 */
+    if (pageTitle) {
+      pageTitle.textContent = state.query
+        ? "“" + state.query + "”的搜索结果"
+        : baseTitle;
+    }
 
     if (!items.length) {
       emptyText.textContent = state.query
@@ -149,6 +159,11 @@
 
     if (!item) return;
 
+    if (shop.hasDetail && shop.hasDetail(item.id)) {
+      window.location.href = "product.html?id=" + encodeURIComponent(item.id);
+      return;
+    }
+
     toast(
       item.stock > 0
         ? "「" + item.name + "」详情页即将上线"
@@ -179,6 +194,9 @@
     }
     if (pageEyebrow) pageEyebrow.textContent = "全部" + cat.desc;
   }
+
+  /* 记下当前分类 / 新品对应的标题，搜索时用来恢复 */
+  if (pageTitle) baseTitle = pageTitle.textContent;
 
   /* 首页搜索直达：带 q 参数进来直接出结果 */
   if (keyword) {

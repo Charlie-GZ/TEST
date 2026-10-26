@@ -33,6 +33,8 @@
     rowBirthday: document.getElementById("rowBirthday"),
     grid: document.getElementById("addrGrid"),
     addTop: document.getElementById("addAddressTop"),
+    orderList: document.getElementById("orderList"),
+    orderCount: document.getElementById("orderCount"),
     logout: document.getElementById("pfLogout"),
   };
 
@@ -398,6 +400,105 @@
     els.grid.innerHTML = html;
   }
 
+  /* ---------------- 我的订单 ---------------- */
+
+  var ordersApi = window.CShopOrders;
+  var PAY_NAME = { wechat: "微信支付", alipay: "支付宝", card: "银行卡" };
+
+  function money(n) {
+    return "¥" + Number(n || 0).toLocaleString("en-US");
+  }
+
+  function orderTime(ts) {
+    var d = new Date(Number(ts) || Date.now());
+    return (
+      pad(d.getMonth() + 1) +
+      "-" +
+      pad(d.getDate()) +
+      " " +
+      pad(d.getHours()) +
+      ":" +
+      pad(d.getMinutes())
+    );
+  }
+
+  function renderOrders() {
+    var list = ordersApi ? ordersApi.list(session.account) : [];
+
+    els.orderCount.textContent = list.length ? list.length + " 笔" : "暂无订单";
+
+    if (!list.length) {
+      els.orderList.innerHTML =
+        '<div class="pf-orders__empty">' +
+        "<p>还没有下单记录，挑一件喜欢的试试。</p>" +
+        '<a href="products.html">去逛逛 ›</a>' +
+        "</div>";
+      return;
+    }
+
+    els.orderList.innerHTML = list
+      .map(function (order) {
+        var items = order.items || [];
+        var qty = items.reduce(function (sum, item) {
+          return sum + (Number(item.qty) || 1);
+        }, 0);
+        var first = items[0] ? items[0].name : "订单商品";
+        var title =
+          items.length > 1 ? first + " 等 " + items.length + " 款" : first;
+
+        var thumbs = items
+          .slice(0, 3)
+          .map(function (item) {
+            return item.image
+              ? '<img class="pf-order__thumb" src="' +
+                  esc(item.image) +
+                  '" alt="" loading="lazy" />'
+              : "";
+          })
+          .join("");
+
+        return (
+          '<article class="pf-order">' +
+          '<div class="pf-order__head">' +
+          '<div class="pf-order__meta">' +
+          '<span class="pf-order__id">' +
+          esc(order.id) +
+          "</span>" +
+          '<span class="pf-order__time">' +
+          orderTime(order.createdAt) +
+          "</span>" +
+          "</div>" +
+          '<span class="pf-order__status"><i></i>准备发货</span>' +
+          "</div>" +
+          '<div class="pf-order__body">' +
+          '<div class="pf-order__thumbs">' +
+          thumbs +
+          "</div>" +
+          '<div class="pf-order__info">' +
+          '<p class="pf-order__name">' +
+          esc(title) +
+          "</p>" +
+          '<p class="pf-order__sub">共 ' +
+          qty +
+          " 件 · " +
+          esc(PAY_NAME[order.payment] || "在线支付") +
+          "</p>" +
+          "</div>" +
+          '<div class="pf-order__right">' +
+          '<span class="pf-order__amount">' +
+          money(order.total) +
+          "</span>" +
+          '<a class="pf-order__link" href="order.html?id=' +
+          encodeURIComponent(order.id) +
+          '">查看订单 ›</a>' +
+          "</div>" +
+          "</div>" +
+          "</article>"
+        );
+      })
+      .join("");
+  }
+
   function openAddressModal(address) {
     var editing = !!address;
     var item = address || {
@@ -630,6 +731,7 @@
 
   var sections = [
     { id: "basic", el: document.getElementById("basic") },
+    { id: "orders", el: document.getElementById("orders") },
     { id: "address", el: document.getElementById("address") },
   ];
   var indexItems = Array.prototype.slice.call(
@@ -656,5 +758,6 @@
 
   renderUser();
   renderAddresses();
+  renderOrders();
   syncIndex();
 })();

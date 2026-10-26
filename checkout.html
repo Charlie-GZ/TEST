@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#ffffff" />
+  <title>结算 · CSHOP</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="css/style.css?v=148" />
+  <link rel="stylesheet" href="css/cart.css?v=148" />
+  <link rel="stylesheet" href="css/home.css?v=152" />
+  <link rel="stylesheet" href="css/checkout.css?v=148" />
+  <link rel="stylesheet" href="css/assistant.css?v=4" />
+</head>
+<body class="home" data-page="checkout">
+
+  <svg class="sprite" aria-hidden="true" focusable="false">
+    <symbol id="art-bag" viewBox="0 0 24 24">
+      <path d="M6.5 8h11l1 12h-13z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+      <path d="M9.2 8V6.4a2.8 2.8 0 0 1 5.6 0V8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+    </symbol>
+  </svg>
+
+  <!-- ==================== 顶部导航 ==================== -->
+  <header class="nav" id="nav">
+    <div class="nav__inner">
+      <span class="nav__logo" aria-label="CSHOP">CSHOP</span>
+
+      <nav class="nav__links" aria-label="商品分类" id="navLinks">
+        <button class="nav__link" type="button" data-nav="首页">首页</button>
+        <button class="nav__link" type="button" data-nav="商品">商品</button>
+        <button class="nav__link" type="button" data-nav="新品">新品</button>
+        <button class="nav__link" type="button" data-nav="CPhone">CPhone</button>
+        <button class="nav__link" type="button" data-nav="CPad">CPad</button>
+        <button class="nav__link" type="button" data-nav="CBook">CBook</button>
+        <button class="nav__link" type="button" data-nav="配件">配件</button>
+      </nav>
+
+      <div class="nav__tools">
+        <button class="icon-btn" type="button" id="cartBtn" aria-label="购物车">
+          <svg viewBox="0 0 24 24" aria-hidden="true" class="icon-btn__svg">
+            <use href="#art-bag" />
+          </svg>
+          <span class="icon-btn__badge" id="cartBadge" hidden>0</span>
+        </button>
+
+        <div class="user">
+          <button class="user__btn" type="button" id="userBtn" aria-haspopup="true" aria-expanded="false" aria-label="账户菜单">
+            <img class="user__avatar" id="navAvatar" src="assets/avatars/avatar-male.png" alt="" />
+          </button>
+          <div class="user__menu" id="userMenu" hidden>
+            <div class="user__info">
+              <img class="user__avatar user__avatar--lg" id="menuAvatar" src="assets/avatars/avatar-male.png" alt="" />
+              <div>
+                <p class="user__name" id="menuName">用户</p>
+                <p class="user__account" id="menuAccount"></p>
+              </div>
+            </div>
+            <button class="user__logout" type="button" id="logoutBtn">退出登录</button>
+          </div>
+        </div>
+
+        <form class="search" id="searchForm" role="search" autocomplete="off">
+          <svg class="search__icon" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="11" cy="11" r="6.4" fill="none" stroke="currentColor" stroke-width="1.7" />
+            <path d="M16 16l4.2 4.2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
+          </svg>
+          <input class="search__input" id="searchInput" type="search" placeholder="搜索商品、型号或关键词" aria-label="搜索商品" />
+          <button class="search__clear" type="button" id="searchClear" aria-label="清除搜索" hidden>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7L7 17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" /></svg>
+          </button>
+          <div class="search__panel" id="searchPanel" hidden>
+            <p class="search__hint" id="searchHint">热门搜索</p>
+            <div class="search__list" id="searchList"></div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="nav-menu" id="navMenu" aria-hidden="true">
+      <div class="nav-menu__inner">
+        <div class="nav-menu__body" id="navMenuBody"></div>
+      </div>
+    </div>
+  </header>
+
+  <div class="nav-scrim" id="navScrim" aria-hidden="true"></div>
+
+  <main class="co">
+    <nav class="co__crumb" aria-label="面包屑">
+      <a href="products.html">商店</a>
+      <span class="co__crumb-sep" aria-hidden="true">/</span>
+      <span aria-current="page">结算</span>
+    </nav>
+
+    <div class="co__head">
+      <h1 class="co__title">结算</h1>
+      <p class="co__sub" id="coSub">共 0 件商品</p>
+    </div>
+
+    <div class="co__grid">
+      <!-- ==================== 左：填写区 ==================== -->
+      <div class="co__main">
+
+        <!-- 收货地址 -->
+        <section class="co-card">
+          <header class="co-card__head">
+            <h2 class="co-card__title">
+              <span class="co-card__num">1</span>收货地址
+            </h2>
+            <button class="co-link" type="button" id="addrNew">+ 新增地址</button>
+          </header>
+
+          <div class="co-addr" id="addrList"></div>
+
+          <div class="co-addr-empty" id="addrEmpty" hidden>
+            <p class="co-addr-empty__title">还没有收货地址</p>
+            <p class="co-addr-empty__sub">填一个地址，我们就知道该寄到哪里了。</p>
+            <button class="co-ghost-btn" type="button" id="addrEmptyBtn">添加收货地址</button>
+          </div>
+
+          <!-- 新增地址表单 -->
+          <form class="co-form" id="addrForm" hidden autocomplete="off">
+            <div class="co-form__row">
+              <label class="co-field">
+                <span class="co-field__label">收货人</span>
+                <input class="co-input" id="afName" type="text" maxlength="20" placeholder="姓名" required />
+              </label>
+              <label class="co-field">
+                <span class="co-field__label">手机号</span>
+                <input class="co-input" id="afPhone" type="tel" maxlength="11" placeholder="11 位手机号" required />
+              </label>
+            </div>
+
+            <div class="co-form__row co-form__row--3">
+              <label class="co-field">
+                <span class="co-field__label">省 / 直辖市</span>
+                <select class="co-input" id="afProvince" required></select>
+              </label>
+              <label class="co-field">
+                <span class="co-field__label">城市</span>
+                <select class="co-input" id="afCity" required></select>
+              </label>
+              <label class="co-field">
+                <span class="co-field__label">区 / 县</span>
+                <select class="co-input" id="afDistrict" required></select>
+              </label>
+            </div>
+
+            <label class="co-field">
+              <span class="co-field__label">详细地址</span>
+              <input class="co-input" id="afDetail" type="text" maxlength="60" placeholder="街道、门牌号、楼层、房间号" required />
+            </label>
+
+            <div class="co-form__tags" role="group" aria-label="地址标签">
+              <span class="co-field__label">标签</span>
+              <button class="co-tag is-active" type="button" data-tag="家">家</button>
+              <button class="co-tag" type="button" data-tag="公司">公司</button>
+              <button class="co-tag" type="button" data-tag="学校">学校</button>
+            </div>
+
+            <div class="co-form__foot">
+              <label class="co-check">
+                <input type="checkbox" id="afDefault" />
+                <span>设为默认地址</span>
+              </label>
+              <div class="co-form__actions">
+                <button class="co-ghost-btn" type="button" id="addrCancel">取消</button>
+                <button class="co-ghost-btn co-ghost-btn--solid" type="submit">保存并使用</button>
+              </div>
+            </div>
+            <p class="co-form__error" id="afError" hidden></p>
+          </form>
+        </section>
+
+        <!-- 配送方式 -->
+        <section class="co-card">
+          <header class="co-card__head">
+            <h2 class="co-card__title">
+              <span class="co-card__num">2</span>配送方式
+            </h2>
+          </header>
+
+          <div class="co-ship">
+            <div class="co-ship__item is-active">
+              <span class="co-ship__radio" aria-hidden="true"></span>
+              <div class="co-ship__main">
+                <p class="co-ship__name">顺丰标快</p>
+                <p class="co-ship__desc">今日 18:00 前下单，预计明日送达</p>
+              </div>
+              <span class="co-ship__fee">免运费</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- 支付方式 -->
+        <section class="co-card">
+          <header class="co-card__head">
+            <h2 class="co-card__title">
+              <span class="co-card__num">3</span>支付方式
+            </h2>
+          </header>
+
+          <div class="co-pay" id="payList" role="radiogroup" aria-label="支付方式">
+            <button class="co-pay__item is-active" type="button" role="radio" aria-checked="true" data-pay="wechat">
+              <span class="co-pay__icon co-pay__icon--wechat" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M9.2 4.6c-3.6 0-6.5 2.5-6.5 5.6 0 1.8 1 3.3 2.6 4.4l-.7 2.1 2.4-1.2c.7.2 1.4.3 2.2.3h.5a5 5 0 0 1-.2-1.4c0-3 3-5.5 6.7-5.5h.4c-.6-2.5-3.3-4.3-6.4-4.3Z" fill="currentColor" opacity=".9"/><path d="M21.2 13.7c0-2.6-2.5-4.7-5.6-4.7s-5.6 2.1-5.6 4.7 2.5 4.7 5.6 4.7c.7 0 1.3-.1 1.9-.3l1.9 1-.6-1.7c1.5-.9 2.4-2.2 2.4-3.7Z" fill="currentColor"/></svg>
+              </span>
+              <span class="co-pay__name">微信支付</span>
+              <span class="co-pay__check" aria-hidden="true"></span>
+            </button>
+
+            <button class="co-pay__item" type="button" role="radio" aria-checked="false" data-pay="alipay">
+              <span class="co-pay__icon co-pay__icon--alipay" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M7 8.4h10M12 6v5.2c0 2.8-1.9 4.6-4.6 5.2M8.4 14.2c2.6 1.9 5.5 2.4 8.6 1.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+              </span>
+              <span class="co-pay__name">支付宝</span>
+              <span class="co-pay__check" aria-hidden="true"></span>
+            </button>
+
+            <button class="co-pay__item" type="button" role="radio" aria-checked="false" data-pay="card">
+              <span class="co-pay__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><rect x="2.6" y="5.4" width="18.8" height="13.2" rx="2.6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M2.6 10h18.8" stroke="currentColor" stroke-width="1.6"/><path d="M6 14.6h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+              </span>
+              <span class="co-pay__name">银行卡</span>
+              <span class="co-pay__check" aria-hidden="true"></span>
+            </button>
+          </div>
+        </section>
+
+        <!-- 备注 -->
+        <section class="co-card">
+          <header class="co-card__head">
+            <h2 class="co-card__title">
+              <span class="co-card__num">4</span>备注<span class="co-optional">选填</span>
+            </h2>
+          </header>
+          <textarea class="co-textarea" id="coNote" maxlength="80" rows="3" placeholder="如有特殊要求可以写在这里"></textarea>
+        </section>
+      </div>
+
+      <!-- ==================== 右：订单摘要 ==================== -->
+      <aside class="co-summary" aria-label="订单摘要">
+        <h2 class="co-summary__title">订单摘要</h2>
+
+        <div class="co-items" id="coItems"></div>
+
+        <dl class="co-money">
+          <div class="co-money__row">
+            <dt>商品合计</dt>
+            <dd id="sumGoods">¥0</dd>
+          </div>
+          <div class="co-money__row">
+            <dt>运费</dt>
+            <dd class="co-money__free">免运费</dd>
+          </div>
+          <div class="co-money__row co-money__row--total">
+            <dt>应付总额</dt>
+            <dd id="sumTotal">¥0</dd>
+          </div>
+        </dl>
+
+        <button class="co-submit" type="button" id="coSubmit">
+          提交订单
+          <span class="co-submit__amount" id="submitAmount"></span>
+        </button>
+
+        <p class="co-summary__note">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.6 20 6v5.4c0 4.4-3.2 7.6-8 9-4.8-1.4-8-4.6-8-9V6z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="m8.8 12.1 2.3 2.3 4.2-4.3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          提交订单即表示同意《CSHOP 服务条款》，演示项目不产生真实交易
+        </p>
+      </aside>
+    </div>
+  </main>
+
+  <!-- ==================== 支付弹层 ==================== -->
+  <div class="co-modal" id="payModal" hidden>
+    <div class="co-modal__mask" data-close></div>
+    <div class="co-modal__panel" role="dialog" aria-modal="true" aria-labelledby="payTitle">
+      <button class="co-modal__close" type="button" data-close aria-label="关闭">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7L7 17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+      </button>
+
+      <p class="co-modal__brand" id="payBrand">微信支付</p>
+      <p class="co-modal__amount" id="payAmount">¥0</p>
+
+      <div class="co-qr">
+        <canvas id="payQr" width="360" height="360" aria-label="模拟支付二维码"></canvas>
+        <span class="co-qr__badge">模拟二维码</span>
+      </div>
+
+      <div class="co-cardform" id="payCard" hidden>
+        <label class="co-field">
+          <span class="co-field__label">卡号</span>
+          <input class="co-input" id="cardNo" inputmode="numeric" placeholder="4242 4242 4242 4242" maxlength="19" />
+        </label>
+        <div class="co-cardform__row">
+          <label class="co-field">
+            <span class="co-field__label">有效期</span>
+            <input class="co-input" id="cardExp" placeholder="MM / YY" maxlength="7" />
+          </label>
+          <label class="co-field">
+            <span class="co-field__label">安全码</span>
+            <input class="co-input" id="cardCvv" placeholder="CVV" maxlength="4" />
+          </label>
+        </div>
+        <p class="co-cardform__tip">演示环境不校验卡号，填任意内容即可</p>
+      </div>
+
+      <p class="co-modal__hint" id="payHint">请使用微信扫一扫完成支付</p>
+
+      <button class="co-submit co-submit--modal" type="button" id="payDone">我已完成支付</button>
+      <button class="co-link co-link--center" type="button" data-close>换个方式支付</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/regions.js?v=148"></script>
+  <script src="js/auth.js?v=148"></script>
+  <script src="js/products.js?v=149"></script>
+  <script src="js/cart.js?v=148"></script>
+  <script src="js/nav.js?v=150"></script>
+  <script src="js/orders.js?v=148"></script>
+  <script src="js/checkout.js?v=150"></script>
+  <script src="js/ai-endpoint.js?v=1"></script>
+  <script src="js/assistant-tools.js?v=4"></script>
+  <script src="js/assistant.js?v=4"></script>
+</body>
+</html>

@@ -304,9 +304,9 @@ window.CShopCart = (function () {
     });
 
     ui.checkout.addEventListener("click", function () {
-      var state = snapshot();
-      if (!state.count) return;
-      toast("共 " + state.count + " 件，结算功能即将上线");
+      if (!snapshot().count) return;
+      close();
+      window.location.href = "checkout.html";
     });
 
     document.addEventListener("keydown", function (event) {

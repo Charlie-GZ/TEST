@@ -16,7 +16,7 @@
 
   /* 已登录则直接进入商城 */
   if (auth.getSession()) {
-    window.location.replace("index.html");
+    window.location.replace("index.html?v=148");
     return;
   }
 
@@ -130,7 +130,7 @@
     submitBtn.textContent = "登录中...";
 
     window.setTimeout(function () {
-      window.location.href = "index.html";
+      window.location.href = "index.html?v=148";
     }, 260);
   });
 })();

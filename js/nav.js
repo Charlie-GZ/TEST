@@ -219,8 +219,7 @@
   var menuOpen = false;
   var menuKey = null;
   var closeTimer = null;
-  var resetTimer = null;
-  var compact = window.matchMedia("(max-width: 860px)").matches;
+  var compact = window.matchMedia("(max-width: 1000px)").matches;
 
   var NAV_MENUS = {
     新品: {
@@ -333,6 +332,19 @@
 
     if (page === "home") {
       activeKey = "首页";
+    } else if (page === "product") {
+      /* 商品详情页：按该商品所属品类点亮 */
+      var pid = params.get("id");
+      var target = null;
+
+      if (pid && window.CShopProducts) {
+        target = window.CShopProducts.all.filter(function (item) {
+          return item.id === pid;
+        })[0];
+      }
+
+      activeKey =
+        target && CAT_KEY[target.category] ? CAT_KEY[target.category] : "商品";
     } else if (page === "products") {
       if (params.get("new") === "1") {
         activeKey = "新品";
@@ -407,14 +419,12 @@
   function openMenu(key, link) {
     if (compact || !NAV_MENUS[key] || !navMenu) return;
     window.clearTimeout(closeTimer);
-    window.clearTimeout(resetTimer);
 
     if (menuOpen && menuKey === key) return;
 
     var wasOpen = menuOpen;
     menuOpen = true;
     menuKey = key;
-    navMenu.classList.remove("is-closing");
 
     navLinks.forEach(function (item) {
       item.classList.toggle("is-menu-open", item === link);
@@ -423,19 +433,18 @@
     if (!wasOpen) {
       renderMenu(key);
 
-      /* 高度瞬间到位，只让 clip-path 从顶部把面板「拉下来」 */
-      navMenu.classList.add("is-instant");
-      navMenu.style.height = measureMenuHeight() + "px";
-      void navMenu.offsetHeight;
-      navMenu.classList.remove("is-instant");
-
+      /* 从 0 高度向下展开：先让面板以 0 高度完成一帧，再写入目标高度 */
+      var targetHeight = measureMenuHeight();
       navMenu.classList.add("is-open");
+      void navMenu.offsetHeight;
+      navMenu.style.height = targetHeight + "px";
+
       if (navScrim) navScrim.classList.add("is-visible");
       navMenu.setAttribute("aria-hidden", "false");
       return;
     }
 
-    /* 已展开时切换栏目：内容立即替换，高度平滑过渡 + 轻微淡入 */
+    /* 已展开时切换栏目：高度平滑过渡 + 轻微淡入 */
     renderMenu(key);
     navMenu.style.height = measureMenuHeight() + "px";
 
@@ -457,23 +466,13 @@
         menuKey = null;
 
         navMenu.classList.remove("is-open");
-        navMenu.classList.add("is-closing");
+        navMenu.style.height = "0px";
         if (navScrim) navScrim.classList.remove("is-visible");
         navMenu.setAttribute("aria-hidden", "true");
 
         navLinks.forEach(function (item) {
           item.classList.remove("is-menu-open");
         });
-
-        /* 帘子收起后再把高度归零，避免收起过程被高度变化打断 */
-        window.clearTimeout(resetTimer);
-        resetTimer = window.setTimeout(function () {
-          if (menuOpen) return;
-          navMenu.classList.add("is-instant");
-          navMenu.style.height = "0px";
-          void navMenu.offsetHeight;
-          navMenu.classList.remove("is-instant");
-        }, 320);
       },
       instant ? 0 : 90
     );
@@ -506,7 +505,7 @@
         if (document.body.dataset.page === "home") {
           window.scrollTo({ top: 0, behavior: "smooth" });
         } else {
-          window.location.href = "index.html";
+          window.location.href = "index.html?v=148";
         }
         return;
       }
@@ -574,7 +573,7 @@
     );
 
     window.addEventListener("resize", function () {
-      compact = window.matchMedia("(max-width: 860px)").matches;
+      compact = window.matchMedia("(max-width: 1000px)").matches;
       if (compact && menuOpen) closeMenu(true);
     });
   }

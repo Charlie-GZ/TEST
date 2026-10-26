@@ -99,32 +99,25 @@
   height: 0;
   overflow: hidden;
   pointer-events: none;
-  /* 接近纯白，去掉面板自身的模糊以减轻合成负担，动画更稳 */
-  background: rgba(255, 255, 255, 0.98);
+  visibility: hidden;
+  opacity: 0;
+  /* 接近纯白；不叠第二层全屏模糊，展开和切换更稳 */
+  background: rgba(255, 255, 255, 0.985);
   /* 用投影画分隔线，避免收起时残留 1px 边框 */
   box-shadow: 0 1px 0 rgba(16, 22, 34, 0.07),
     0 36px 54px -46px rgba(11, 13, 18, 0.55);
-  /* 关键：用 clip-path 从顶部向下揭开，而不是把高度撑开 */
-  clip-path: inset(0 0 100% 0);
-  /* 先加速再收尾，帘子有明显“落下来”的过程，不会一瞬到底 */
-  transition: height 0.32s cubic-bezier(0.32, 0.72, 0, 1),
-    clip-path 0.52s cubic-bezier(0.4, 0.05, 0.2, 1);
-  will-change: clip-path, height;
+  contain: layout style;
+  /* 帘子从顶部向下落下：高度增长、内容顶部固定并逐渐露出 */
+  transition: height 0.3s cubic-bezier(0.32, 0.72, 0, 1),
+    opacity 0.2s ease, visibility 0s linear 0.3s;
 }
 
 .nav-menu.is-open {
   pointer-events: auto;
-  clip-path: inset(0 0 0 0);
-}
-
-/* 展开/收起过程不做高度过渡，只让帘子落下 */
-.nav-menu.is-instant {
-  transition: none !important;
-}
-
-/* 收起比展开更快一点，手感更利落 */
-.nav-menu.is-closing {
-  transition-duration: 0.26s;
+  visibility: visible;
+  opacity: 1;
+  transition: height 0.4s cubic-bezier(0.32, 0.72, 0, 1),
+    opacity 0.24s ease, visibility 0s;
 }
 
 .nav-menu__inner {
@@ -133,12 +126,12 @@
   padding: 30px clamp(16px, 3vw, 28px) 34px;
 }
 
-/* 内容随帘子一起往下落，形成“自上而下展开”的动势 */
+/* 内容随帘子一起往下落 */
 .nav-menu__body {
   opacity: 0;
   transform: translateY(-16px);
-  transition: opacity 0.3s ease,
-    transform 0.52s cubic-bezier(0.33, 0, 0.2, 1);
+  transition: opacity 0.26s ease,
+    transform 0.4s cubic-bezier(0.33, 0, 0.2, 1);
 }
 
 .nav-menu.is-open .nav-menu__body {
@@ -217,17 +210,15 @@
   transform: translateX(4px);
 }
 
-/* 下拉时页面内容虚化 */
+/* 下拉时用轻纱遮罩聚焦内容；全屏实时模糊会在落帘过程中掉帧，这里不用 */
 .nav-scrim {
   position: fixed;
   inset: 0;
   z-index: 40;
   opacity: 0;
   pointer-events: none;
-  background: rgba(255, 255, 255, 0.34);
-  -webkit-backdrop-filter: blur(14px) saturate(125%);
-  backdrop-filter: blur(14px) saturate(125%);
-  transition: opacity 0.24s ease;
+  background: rgba(250, 250, 252, 0.52);
+  transition: opacity 0.26s ease;
 }
 
 .nav-scrim.is-visible {
@@ -386,22 +377,54 @@
 .search {
   position: relative;
   width: 236px;
-  transition: width 0.26s cubic-bezier(0.22, 0.9, 0.25, 1);
+  transition: width 0.42s cubic-bezier(0.22, 0.9, 0.25, 1);
 }
 
 .search:focus-within {
-  width: 296px;
+  width: 298px;
 }
 
 .search__icon {
   position: absolute;
-  left: 12px;
+  left: 6px;
   top: 50%;
   transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #9aa0ab;
+  cursor: pointer;
+  transition: color 0.32s ease, background-color 0.2s ease,
+    transform 0.42s cubic-bezier(0.22, 0.9, 0.25, 1);
+}
+
+.search__icon svg {
   width: 16px;
   height: 16px;
-  color: #9aa0ab;
-  pointer-events: none;
+}
+
+.search__icon:hover {
+  color: var(--ink-soft);
+  background: #ececef;
+}
+
+.search__icon:active {
+  transform: translateY(-50%) scale(0.94);
+}
+
+.search__icon:focus-visible {
+  outline: 2px solid rgba(10, 132, 255, 0.45);
+  outline-offset: 1px;
+}
+
+.search:focus-within .search__icon {
+  color: var(--ink);
+  transform: translateY(-50%) scale(1.06);
 }
 
 .search__input {
@@ -414,11 +437,18 @@
   font-size: 13px;
   color: var(--ink);
   appearance: none;
-  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: background-color 0.32s ease, border-color 0.32s ease,
+    box-shadow 0.42s cubic-bezier(0.22, 0.9, 0.25, 1);
+}
+
+.search:hover .search__input {
+  background: #f0f1f4;
+  border-color: rgba(16, 22, 34, 0.14);
 }
 
 .search__input::placeholder {
   color: #9aa0ab;
+  transition: color 0.3s ease;
 }
 
 .search__input::-webkit-search-cancel-button,
@@ -429,15 +459,19 @@
 .search__input:focus {
   outline: none;
   background: #fff;
-  border-color: rgba(10, 132, 255, 0.55);
-  box-shadow: 0 0 0 4px rgba(10, 132, 255, 0.12);
+  border-color: rgba(10, 132, 255, 0.42);
+  box-shadow: 0 0 0 4px rgba(10, 132, 255, 0.1),
+    0 12px 26px -22px rgba(10, 132, 255, 0.65);
+}
+
+.search__input:focus::placeholder {
+  color: #b8bcc4;
 }
 
 .search__clear {
   position: absolute;
   right: 6px;
   top: 50%;
-  transform: translateY(-50%);
   width: 26px;
   height: 26px;
   display: grid;
@@ -447,6 +481,25 @@
   background: transparent;
   color: #9aa0ab;
   cursor: pointer;
+  opacity: 0;
+  transform: translateY(-50%) scale(0.82);
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.3s cubic-bezier(0.22, 0.9, 0.25, 1),
+    background-color 0.18s ease, color 0.18s ease;
+}
+
+.search__clear:not([hidden]) {
+  opacity: 1;
+  transform: translateY(-50%) scale(1);
+  pointer-events: auto;
+  animation: search-clear-in 0.26s cubic-bezier(0.22, 0.9, 0.25, 1);
+}
+
+@keyframes search-clear-in {
+  from {
+    opacity: 0;
+    transform: translateY(-50%) scale(0.82);
+  }
 }
 
 .search__clear:hover {
@@ -454,106 +507,14 @@
   color: var(--ink-soft);
 }
 
+.search__clear:focus-visible {
+  outline: 2px solid rgba(10, 132, 255, 0.45);
+  outline-offset: 1px;
+}
+
 .search__clear svg {
   width: 14px;
   height: 14px;
-}
-
-.search__panel {
-  position: absolute;
-  right: 0;
-  top: calc(100% + 10px);
-  width: 320px;
-  max-width: calc(100vw - 32px);
-  padding: 12px;
-  border-radius: 16px;
-  background: #fff;
-  border: 1px solid rgba(16, 22, 34, 0.06);
-  box-shadow: 0 30px 64px -34px rgba(11, 13, 18, 0.45);
-  animation: menu-in 0.18s ease both;
-  z-index: 60;
-}
-
-.search__hint {
-  margin: 2px 4px 8px;
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  color: #9aa0ab;
-}
-
-.search__list {
-  display: flex;
-  flex-direction: column;
-}
-
-.search__row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
-  padding: 8px;
-  border: 0;
-  border-radius: 10px;
-  background: transparent;
-  text-align: left;
-  cursor: pointer;
-  transition: background 0.16s ease;
-}
-
-.search__row:hover,
-.search__row:focus-visible {
-  background: #f5f5f7;
-  outline: none;
-}
-
-.search__thumb {
-  width: 44px;
-  height: 34px;
-  flex: 0 0 44px;
-  border-radius: 8px;
-  display: grid;
-  place-items: center;
-  background: linear-gradient(150deg, #f4f5f7, #e9ecf1);
-}
-
-.search__thumb svg {
-  width: 34px;
-  height: 24px;
-}
-
-.search__meta {
-  flex: 1 1 auto;
-  min-width: 0;
-}
-
-.search__name {
-  display: block;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--ink);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.search__sub {
-  display: block;
-  margin-top: 2px;
-  font-size: 11px;
-  color: #9aa0ab;
-}
-
-.search__price {
-  font-size: 12.5px;
-  font-weight: 600;
-  color: var(--ink-soft);
-}
-
-.search__empty {
-  padding: 12px 8px 14px;
-  font-size: 12.5px;
-  color: #86868b;
-  line-height: 1.6;
 }
 
 /* ------------------------------------------------------------
@@ -568,26 +529,54 @@
   position: relative;
   max-width: 1240px;
   margin: 0 auto;
+  border-radius: clamp(20px, 2.2vw, 30px);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: #0a0908;
+  box-shadow: 0 48px 100px -70px rgba(10, 8, 6, 0.85);
+}
+
+/* ---------------- 轮播骨架 ---------------- */
+
+.hero__viewport {
+  overflow: hidden;
+}
+
+.hero__track {
+  display: flex;
+  transition: transform 0.92s cubic-bezier(0.22, 0.9, 0.26, 1);
+  will-change: transform;
+}
+
+.hero__slide {
+  position: relative;
+  flex: 0 0 100%;
   display: grid;
   grid-template-columns: 1.02fr 1fr;
   align-items: center;
   gap: clamp(16px, 3vw, 40px);
-  padding: clamp(34px, 4.4vw, 62px) clamp(24px, 4vw, 56px);
-  border-radius: clamp(20px, 2.2vw, 30px);
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.9);
+  padding: clamp(34px, 4.4vw, 62px) clamp(24px, 4vw, 56px)
+    clamp(88px, 7.4vw, 96px);
+}
+
+/* 幻灯片 1：深金 / 折叠本 */
+.hero__slide--fold {
   background: radial-gradient(
-      760px 420px at 80% 14%,
-      rgba(126, 164, 255, 0.18),
-      rgba(126, 164, 255, 0) 62%
+      900px 460px at 76% 22%,
+      rgba(196, 152, 84, 0.16),
+      rgba(196, 152, 84, 0) 62%
     ),
-    radial-gradient(
-      520px 380px at 8% 92%,
-      rgba(255, 210, 164, 0.2),
-      rgba(255, 210, 164, 0) 62%
+    linear-gradient(118deg, #0a0908 0%, #100e0c 44%, #171210 100%);
+}
+
+/* 幻灯片 2：冰蓝 / CPhone ING */
+.hero__slide--phone {
+  background: radial-gradient(
+      820px 460px at 78% 24%,
+      rgba(120, 186, 226, 0.28),
+      rgba(120, 186, 226, 0) 64%
     ),
-    linear-gradient(150deg, #fbfbfd 0%, #f2f4f8 54%, #ebeff5 100%);
-  box-shadow: 0 40px 90px -70px rgba(16, 22, 34, 0.55);
+    linear-gradient(122deg, #f7fbfe 0%, #eef7fc 46%, #e3f1fa 100%);
 }
 
 /* 标题上方的引导行：细线 + 字距拉开的品牌/年份/季节 */
@@ -636,22 +625,47 @@
   letter-spacing: 0.14em;
 }
 
+/* 深色首屏里的文字配色：金色引导行 + 白色主标题 */
+.hero .eyebrow {
+  color: #e8ca90;
+}
+
+.hero .eyebrow::before {
+  background: linear-gradient(
+    90deg,
+    rgba(232, 202, 144, 0.55) 0%,
+    rgba(232, 202, 144, 0) 100%
+  );
+}
+
+.hero .eyebrow__year {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.hero .eyebrow__dot {
+  background: rgba(232, 202, 144, 0.62);
+}
+
+.hero .eyebrow__season {
+  color: rgba(255, 255, 255, 0.56);
+}
+
 .hero__title {
   margin: 16px 0 18px;
-  font-family: "Kaiti SC", "KaiTi", "STKaiti", "楷体", "Kaiti TC", "Songti SC",
-    serif;
-  font-size: clamp(36px, 4.8vw, 64px);
-  line-height: 1.14;
-  font-weight: 700;
-  letter-spacing: 0.01em;
-  color: var(--ink);
+  font-family: "PingFang SC", "HarmonyOS Sans SC", "Source Han Sans SC",
+    "Noto Sans SC", "Microsoft YaHei", var(--font);
+  font-size: clamp(34px, 4.6vw, 60px);
+  line-height: 1.16;
+  font-weight: 800;
+  letter-spacing: 0.015em;
+  color: #ffffff;
 }
 
 .hero__lede {
   margin: 0;
   font-size: clamp(13px, 1.2vw, 15px);
   line-height: 1.75;
-  color: #6e6e73;
+  color: rgba(255, 255, 255, 0.56);
 }
 
 .hero__actions {
@@ -716,76 +730,306 @@
   transform: translateX(3px);
 }
 
+/* 首屏金色主按钮 */
+.hero__actions .btn-ink {
+  background: linear-gradient(180deg, #f5e4b7 0%, #ddbf85 100%);
+  color: #241b11;
+  box-shadow: 0 18px 36px -20px rgba(221, 191, 133, 0.8);
+}
+
+.hero__actions .btn-ink:hover {
+  background: linear-gradient(180deg, #fbeccb 0%, #e5c993 100%);
+  box-shadow: 0 22px 40px -20px rgba(221, 191, 133, 0.9);
+}
+
 /* 视觉区 */
 .hero__visual {
   position: relative;
   min-height: clamp(260px, 30vw, 380px);
 }
 
-.hero__glow {
+/* 产品图：超出列宽后由卡片 overflow 裁掉，
+   左缘用渐变遮罩淡出，与深色卡片背景无缝衔接 */
+.hero__art-img {
   position: absolute;
-  inset: 4% 6% 8% 2%;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle at 52% 46%,
-    rgba(255, 255, 255, 0.95) 0%,
-    rgba(210, 224, 248, 0.62) 42%,
-    rgba(210, 224, 248, 0) 72%
-  );
-  filter: blur(4px);
-}
-
-.hero__ring {
-  position: absolute;
-  left: 51%;
   top: 50%;
-  width: min(82%, 400px);
-  aspect-ratio: 1;
-  border-radius: 50%;
-  border: 1px solid rgba(16, 22, 34, 0.055);
-  transform: translate(-50%, -50%);
-  box-shadow: 0 0 0 30px rgba(255, 255, 255, 0.24),
-    0 0 0 62px rgba(255, 255, 255, 0.12);
-}
-
-.hero__art {
-  position: absolute;
-  height: auto;
-  overflow: visible;
-}
-
-.hero__art--laptop {
-  left: 0;
-  bottom: 10%;
-  width: min(84%, 470px);
-  filter: drop-shadow(0 28px 36px rgba(16, 22, 34, 0.18));
-}
-
-.hero__art--phone {
-  right: 0;
-  bottom: 4%;
-  width: min(33%, 152px);
-  filter: drop-shadow(0 20px 26px rgba(16, 22, 34, 0.24));
-  animation: hero-float 7s ease-in-out infinite alternate;
-}
-
-@keyframes hero-float {
-  from {
-    transform: translateY(0);
-  }
-  to {
-    transform: translateY(-9px);
-  }
+  right: -6%;
+  width: 118%;
+  height: 148%;
+  transform: translateY(-50%);
+  object-fit: cover;
+  object-position: right center;
+  pointer-events: none;
+  user-select: none;
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 0, 0, 0.35) 14%,
+    #000 34%
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 0, 0, 0.35) 14%,
+    #000 34%
+  );
 }
 
 .hero__caption {
   position: absolute;
-  right: 2%;
-  top: 0;
-  font-size: 10px;
-  letter-spacing: 0.16em;
-  color: #a1a6ae;
-  text-transform: uppercase;
+  right: 6%;
+  top: 4px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.19em;
+  line-height: 1.4;
+  color: #e9cb93;
+  text-transform: none;
+  text-shadow: 0 1px 14px rgba(10, 8, 6, 0.65);
+}
+
+.hero__caption::before {
+  content: "";
+  width: 26px;
+  height: 1px;
+  flex: 0 0 auto;
+  background: linear-gradient(
+    90deg,
+    rgba(233, 203, 147, 0) 0%,
+    rgba(233, 203, 147, 0.8) 100%
+  );
+}
+
+/* 非当前幻灯片的内容轻微错位，切换时形成柔和的层次感 */
+.hero__slide .hero__copy,
+.hero__slide .hero__visual {
+  transition: opacity 0.55s ease,
+    transform 0.95s cubic-bezier(0.22, 0.9, 0.26, 1);
+}
+
+.hero__slide:not(.is-active) .hero__copy {
+  opacity: 0.4;
+  transform: translateX(18px);
+}
+
+.hero__slide:not(.is-active) .hero__visual {
+  opacity: 0.5;
+  transform: translateX(26px);
+}
+
+/* ---------------- 幻灯片 2：CPhone ING 版本的配色 ---------------- */
+
+.hero__slide--phone .eyebrow {
+  color: #3b87ad;
+}
+
+.hero__slide--phone .eyebrow::before {
+  background: linear-gradient(
+    90deg,
+    rgba(59, 135, 173, 0.55) 0%,
+    rgba(59, 135, 173, 0) 100%
+  );
+}
+
+.hero__slide--phone .eyebrow__year {
+  color: rgba(10, 40, 56, 0.36);
+}
+
+.hero__slide--phone .eyebrow__dot {
+  background: rgba(59, 135, 173, 0.45);
+}
+
+.hero__slide--phone .eyebrow__season {
+  color: rgba(10, 40, 56, 0.5);
+}
+
+.hero__slide--phone .hero__title {
+  color: #0a1a24;
+  font-size: clamp(30px, 3.9vw, 52px);
+  line-height: 1.22;
+}
+
+.hero__slide--phone .hero__lede {
+  color: #4a6b7d;
+}
+
+/* 三个卖点：AI 影像 / 轻薄机身 / 持久续航 */
+.hero__specs {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  margin: 20px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 12.5px;
+  letter-spacing: 0.06em;
+  color: #5a7f92;
+}
+
+.hero__specs li {
+  position: relative;
+}
+
+.hero__specs li + li::before {
+  content: "";
+  position: absolute;
+  left: -12px;
+  top: 50%;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.45;
+  transform: translateY(-50%);
+}
+
+.hero__slide--phone .hero__actions .btn-ink,
+.btn-ink--phone {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, #8ecbf0 0%, #5aa5d2 100%);
+  color: #ffffff;
+  text-decoration: none;
+  box-shadow: 0 18px 34px -20px rgba(90, 165, 210, 0.9);
+}
+
+.hero__slide--phone .hero__actions .btn-ink:hover,
+.btn-ink--phone:hover {
+  background: linear-gradient(180deg, #a2d6f5 0%, #66b2dd 100%);
+}
+
+/* 手机图与右上角标签 */
+.hero__art-img--phone {
+  right: 0;
+  width: 108%;
+  height: 150%;
+}
+
+.hero__slide--phone .hero__caption {
+  color: #3b87ad;
+  text-shadow: none;
+}
+
+.hero__slide--phone .hero__caption::before {
+  background: linear-gradient(
+    90deg,
+    rgba(59, 135, 173, 0) 0%,
+    rgba(59, 135, 173, 0.75) 100%
+  );
+}
+
+/* ---------------- 切换按钮 ---------------- */
+
+.hero__dots {
+  position: absolute;
+  left: clamp(24px, 4vw, 56px);
+  bottom: clamp(22px, 2.4vw, 30px);
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hero__dot {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 9px 15px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.62);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: color 0.28s ease, background 0.28s ease, border-color 0.28s ease,
+    transform 0.28s ease;
+}
+
+.hero__dot:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.32);
+}
+
+.hero__dot.is-active {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(233, 203, 147, 0.55);
+}
+
+.hero__dot-name {
+  display: block;
+}
+
+/* 5 秒进度条 */
+.hero__dot-bar {
+  position: absolute;
+  left: 15px;
+  right: 15px;
+  bottom: 6px;
+  height: 2px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.16);
+  overflow: hidden;
+}
+
+.hero__dot-bar i {
+  position: absolute;
+  inset: 0;
+  display: block;
+  transform: scaleX(0);
+  transform-origin: left center;
+  background: linear-gradient(90deg, #f0d9a8 0%, #d9b877 100%);
+  border-radius: 2px;
+}
+
+.hero__dot.is-active .hero__dot-bar i {
+  animation: hero-progress 5s linear forwards;
+}
+
+@keyframes hero-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* 浅色幻灯片上的按钮配色 */
+.hero__inner[data-active="1"] .hero__dot {
+  color: rgba(10, 40, 56, 0.6);
+  background: rgba(255, 255, 255, 0.62);
+  border-color: rgba(10, 40, 56, 0.12);
+}
+
+.hero__inner[data-active="1"] .hero__dot:hover {
+  color: #0a1a24;
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(59, 135, 173, 0.4);
+}
+
+.hero__inner[data-active="1"] .hero__dot.is-active {
+  color: #0a1a24;
+  background: #ffffff;
+  border-color: rgba(59, 135, 173, 0.45);
+}
+
+.hero__inner[data-active="1"] .hero__dot-bar {
+  background: rgba(10, 40, 56, 0.12);
+}
+
+.hero__inner[data-active="1"] .hero__dot-bar i {
+  background: linear-gradient(90deg, #7cc0e8 0%, #4a9cc9 100%);
 }
 
 /* ------------------------------------------------------------
@@ -1377,18 +1621,57 @@
 }
 
 @media (max-width: 900px) {
-  .hero__inner {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
-
   .hero__copy {
     order: 1;
   }
 
+  /* 单列：不再放独立图片块，改成幻灯片背景，
+     顶部压暗保证文字可读，下部露出产品，彻底消除矩形接缝 */
+  /* 单列：文字在上、产品图满宽贴底，顶部用遮罩淡入，避免与文字打架 */
+  .hero__slide {
+    grid-template-columns: 1fr;
+    gap: 0;
+    min-height: 0;
+    align-content: start;
+    padding: 30px 22px 96px;
+  }
+
   .hero__visual {
+    display: block;
     order: 2;
-    min-height: 360px;
+    min-height: 0;
+    margin: 20px -22px -96px;
+  }
+
+  .hero__art-img,
+  .hero__art-img--phone {
+    position: relative;
+    top: auto;
+    right: auto;
+    width: 100%;
+    height: 268px;
+    transform: none;
+    object-fit: cover;
+    object-position: 68% center;
+    -webkit-mask-image: linear-gradient(
+      180deg,
+      transparent 0%,
+      #000 24%,
+      #000 76%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      180deg,
+      transparent 0%,
+      #000 24%,
+      #000 76%,
+      transparent 100%
+    );
+  }
+
+  .hero__art-img--phone {
+    object-position: 60% 46%;
+    height: 258px;
   }
 
   .hero__caption {
@@ -1405,7 +1688,7 @@
 }
 
 /* 中等宽度：导航折成两行，分类改为可横向滑动 */
-@media (max-width: 860px) {
+@media (max-width: 1000px) {
   .nav__inner {
     height: auto;
     flex-wrap: wrap;
@@ -1496,17 +1779,47 @@
   }
 
   .search__icon {
-    left: 10px;
+    left: 4px;
+    width: 24px;
+    height: 24px;
+  }
+
+  .search__icon svg {
     width: 15px;
     height: 15px;
   }
 
-  .hero__inner {
-    padding: 28px 20px 30px;
+  .hero__slide {
+    min-height: 0;
+    padding: 26px 20px 88px;
   }
 
   .hero__visual {
-    min-height: 240px;
+    margin: 16px -20px -88px;
+  }
+
+  .hero__art-img {
+    height: 226px;
+  }
+
+  .hero__art-img--phone {
+    height: 218px;
+    object-position: 58% 44%;
+  }
+
+  .hero__dots {
+    left: 20px;
+    bottom: 18px;
+    gap: 8px;
+  }
+
+  .hero__dot {
+    padding: 8px 12px 14px;
+    font-size: 11px;
+  }
+
+  .hero__visual {
+    min-height: 0;
   }
 
   .entry {
@@ -1540,28 +1853,49 @@
 
 /* 减少动态效果 */
 @media (prefers-reduced-motion: reduce) {
-  /* 导航下拉是用户明确要求的核心交互，保留展开动效
-     （style.css 里的全局降级会把它压成 0.001ms，等于瞬间弹出） */
-  .nav-menu {
-    transition: height 0.32s cubic-bezier(0.32, 0.72, 0, 1),
-      clip-path 0.52s cubic-bezier(0.4, 0.05, 0.2, 1) !important;
+  /* 只去掉「滑动」这个位移动画，轮播本身照常切换（瞬间到位），
+     进度条保留，让用户仍能看出还有多久换屏 —— 否则整块首屏会变成死图 */
+  .hero__track {
+    transition: none;
   }
 
-  .nav-menu.is-closing {
-    transition-duration: 0.26s !important;
+  /* style.css 的全局降级会把动画压到 0.001ms，这里单独把进度条恢复成 5 秒，
+     否则进度条一瞬间就满格，看不出还剩多久换屏 */
+  .hero__dot.is-active .hero__dot-bar i {
+    animation-duration: 5s !important;
+  }
+
+  /* 导航下拉是核心交互：系统关闭动画时也保留落帘，
+     否则全局降级会把它压成瞬间弹出，完全失去下拉感 */
+  .nav-menu {
+    transition: height 0.3s cubic-bezier(0.32, 0.72, 0, 1),
+      opacity 0.2s ease, visibility 0s linear 0.3s !important;
+  }
+
+  .nav-menu.is-open {
+    transition: height 0.4s cubic-bezier(0.32, 0.72, 0, 1),
+      opacity 0.24s ease, visibility 0s !important;
   }
 
   .nav-menu__body {
-    transition: opacity 0.3s ease,
-      transform 0.52s cubic-bezier(0.33, 0, 0.2, 1) !important;
+    transition: opacity 0.26s ease,
+      transform 0.4s cubic-bezier(0.33, 0, 0.2, 1) !important;
   }
 
   .nav-scrim {
-    transition: opacity 0.24s ease !important;
+    transition: opacity 0.26s ease !important;
   }
 
-  .hero__art--phone {
-    animation: none;
+  /* 搜索框的聚焦反馈属于轻微动效，保留宽度、光晕与图标的过渡 */
+  .search,
+  .search__icon,
+  .search__input,
+  .search__clear {
+    transition-duration: 0.32s !important;
+  }
+
+  .search__clear:not([hidden]) {
+    animation-duration: 0.26s !important;
   }
 
   .pcard {

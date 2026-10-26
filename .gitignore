@@ -13,6 +13,10 @@ dist/
 # 课程需求文档与个人笔记，不属于项目本体
 Markdown/
 
+# AI 生图的原始输出与过程图（成品已放在 assets 下）
+generated-images/
+vibe_images/
+
 # 系统 / 编辑器
 .DS_Store
 Thumbs.db
@@ -22,3 +26,7 @@ desktop.ini
 
 # 本项目无 npm 依赖，防止误提交
 node_modules/
+
+# 本地 AI 代理配置（含 DeepSeek Key，绝不提交）
+.env
+.env.local
